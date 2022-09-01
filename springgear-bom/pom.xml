@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>springgear-parent</artifactId>
+        <groupId>org.springgear</groupId>
+        <version>0.0.0-FIXED-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>springgear-bom</artifactId>
+    <version>${ver.revision}${ver.revision.suffix}</version>
+
+    <packaging>pom</packaging>
+
+    <description>
+        springgear 组件装箱清单
+    </description>
+
+    <dependencyManagement>
+
+        <dependencies>
+            <dependency>
+                <groupId>org.springgear</groupId>
+                <artifactId>springgear-context</artifactId>
+                <version>${ver.springgear}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springgear</groupId>
+                <artifactId>springgear-engine</artifactId>
+                <version>${ver.springgear}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springgear</groupId>
+                <artifactId>springgear-support</artifactId>
+                <version>${ver.springgear}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springgear</groupId>
+                <artifactId>springgear-webmvc</artifactId>
+                <version>${ver.springgear}</version>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+</project>
