@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springgear</groupId>
     <artifactId>springgear-parent</artifactId>
-    <version>0.0.0-FIXED-SNAPSHOT</version>
+    <version>2.0.0-dev-snapshot</version>
 
     <modules>
-        <module>springgear-support</module>
-        <module>springgear-engine</module>
-        <module>springgear-context</module>
+        <module>springgear-core</module>
         <module>springgear-webmvc</module>
         <module>springgear-bom</module>
+<!--        <module>springgear-extends-parent</module>-->
+
     </modules>
 
     <packaging>pom</packaging>
@@ -24,14 +22,9 @@
 
         <!--统一源代码编码方式-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <!-- version 统一版本管理，推荐类似 spring 这种多模块引入形式进行引入 -->
-        <ver.springgear>${ver.revision}${ver.revision.suffix}</ver.springgear>
-        <!-- ${ver.springgear}-${ver.suffix.springgear} 包版本为动态更新 -->
-        <ver.revision>1.1.0</ver.revision>
-        <ver.revision.suffix />
 
         <!-- 常用版本 -->
-        <ver.spring>5.3.6</ver.spring>
+        <ver.spring>5.3.22</ver.spring>
         <!--由于elastic-job中用到了低版本的guava，故这里使用低版本的guava，否则elastic-job启动会有问题-->
         <ver.guava>20.0</ver.guava>
 
@@ -54,6 +47,12 @@
         </profile>
 
     </profiles>
+
+    <scm>
+        <connection>scm:git:https://github.com/ousui/springgear-parent.git</connection>
+        <url>https://github.com/ousui/springgear-parent/</url>
+        <developerConnection>scm:git:git@github.com:ousui/springgear-parent.git</developerConnection>
+    </scm>
 
     <build>
         <plugins>
@@ -96,6 +95,16 @@
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>2.8.2</version>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <tagNameFormat>v${project.version}</tagNameFormat>
+                    <autoVersionSubmodules>true</autoVersionSubmodules>
+                    <arguments>-DskipTests</arguments>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -103,26 +112,6 @@
 
         <dependencies>
 
-            <!-- springgear module -->
-
-            <dependency>
-                <groupId>org.springgear</groupId>
-                <artifactId>springgear-support</artifactId>
-                <version>${ver.springgear}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springgear</groupId>
-                <artifactId>springgear-engine</artifactId>
-                <version>${ver.springgear}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springgear</groupId>
-                <artifactId>springgear-context</artifactId>
-                <version>${ver.springgear}</version>
-            </dependency>
-
-            <!-- /springgear module -->
-            
             <dependency>
                 <groupId>org.springframework</groupId>
                 <artifactId>spring-framework-bom</artifactId>

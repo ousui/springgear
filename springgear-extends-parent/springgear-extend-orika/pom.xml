@@ -3,20 +3,20 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>springgear-parent</artifactId>
+        <artifactId>springgear-extend-parent</artifactId>
         <groupId>org.springgear</groupId>
-        <version>0.0.0-FIXED-SNAPSHOT</version>
+        <version>1.0.0-build-snapshot</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>springgear-extend-orika</artifactId>
-    <version>${ver.revision}${ver.revision.suffix}</version>
+<!--    <version>${ver.revision}${ver.revision.suffix}</version>-->
 
     <dependencies>
 
         <dependency>
             <groupId>org.springgear</groupId>
-            <artifactId>springgear-support</artifactId>
+            <artifactId>springgear-core</artifactId>
         </dependency>
 
         <dependency>

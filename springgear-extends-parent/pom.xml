@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springgear</groupId>
+        <artifactId>springgear-parent</artifactId>
+        <version>1.0.0-build-snapshot</version>
+    </parent>
+
+    <artifactId>springgear-extend-parent</artifactId>
+
+    <modules>
+        <module>springgear-extend-orika</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>org.springear</groupId>
+                <artifactId>springgear-bom</artifactId>
+<!--                <version>${ver.revision}</version>-->
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+
+        </dependencies>
+
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springgear</groupId>
+            <artifactId>springgear-core</artifactId>
+<!--            <version>1.1.0-SNAPSHOT</version>-->
+        </dependency>
+    </dependencies>
+
+<!--    <dependencies>-->
+<!--      -->
+<!--        &lt;!&ndash; lombok &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <version>1.18.24</version>-->
+<!--            <scope>provided</scope>-->
+<!--        </dependency>-->
+
+<!--        &lt;!&ndash; /基础依赖，用于所有模块 &ndash;&gt;-->
+<!--    </dependencies>-->
+
+
+</project>
