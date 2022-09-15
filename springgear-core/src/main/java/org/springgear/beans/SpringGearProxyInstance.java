@@ -1,13 +1,11 @@
 package org.springgear.beans;
 
-import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import org.springgear.beans.interceptor.SpringGearInterceptor;
 import org.springgear.beans.interceptor.SpringGearInterceptorChain;
 import org.springgear.context.utils.SpringGearEngineUtils;
-import org.springgear.engine.SpringGearEngineInterface;
-import org.springgear.engine.annotation.SpringGearEngine;
-import org.springgear.exception.GearInterruptException;
+import org.springgear.core.SpringGearEngineInterface;
+import org.springgear.core.annotation.SpringGearEngine;
+import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;
 import org.springgear.support.constants.HttpStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -21,10 +19,8 @@ import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * SpringGear 的动态代理实现类。
@@ -43,7 +39,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
     /**
      * bean 缓存
      */
-    private Map<String, SpringGearEngineInterface> interfaceCachedMap = Maps.newConcurrentMap();
+    private Map<String, SpringGearEngineInterface> interfaceCachedMap = new ConcurrentHashMap<>();
 
     public SpringGearProxyInstance(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -51,7 +47,8 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
         if (CollectionUtils.isEmpty(interceptorMap)) {
             interceptors = Collections.EMPTY_LIST;
         } else {
-            interceptors = Lists.newArrayList(interceptorMap.values());
+            interceptors = new ArrayList<>(interceptorMap.values());
+//            interceptors = Lists.newArrayList(interceptorMap.values());
             AnnotationAwareOrderComparator.sort(interceptors);
         }
     }
@@ -78,7 +75,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
             );
         }
 
-        // 获取指定的 engine name
+        // 获取指定的 core name
         String beanName = SpringGearEngineUtils.getInterfaceBeanName(engine, method);
 
         SpringGearEngineInterface engineBean = this.getEngineBean(beanName);
@@ -131,8 +128,8 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
             ex = e;
             code = e.getCode();
             msg = e.getLocalizedMessage();
-            if (e instanceof GearInterruptException) {
-                resp = ((GearInterruptException) e).getResponse();
+            if (e instanceof SpringGearInterruptException) {
+                resp = ((SpringGearInterruptException) e).getResponse();
             }
             log.warn("There have some business exception happened, code: {}, msg: {}", code, msg);
             chain.onException(beanName, request, timestamp, null, resp, e);

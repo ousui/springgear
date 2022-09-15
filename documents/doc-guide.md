@@ -16,7 +16,7 @@
         </dependencies>
     </dependencyManagement>
 
-    <!-- 在需要的地方，添加相关依赖，注意所有扩展依赖都依赖于 springgear-engine，不必重复引用 -->
+    <!-- 在需要的地方，添加相关依赖，注意所有扩展依赖都依赖于 springgear-core，不必重复引用 -->
     <dependencies>
         <dependency>
             <groupId>org.springgear</groupId>

@@ -1,6 +1,6 @@
 package org.springgear.beans;
 
-import org.springgear.engine.annotation.SpringGearProxy;
+import org.springgear.core.annotation.SpringGearProxy;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;

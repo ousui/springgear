@@ -1,16 +1,16 @@
 package org.springgear.context;
 
-import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Multimap;
+//import com.google.common.collect.ArrayListMultimap;
+//import com.google.common.collect.Lists;
+//import com.google.common.collect.Multimap;
 import org.springgear.beans.factory.SpringGearProxyFactoryBean;
 import org.springgear.context.utils.SpringGearEngineUtils;
-import org.springgear.engine.AbstractSpringGearEngineExecutor;
-import org.springgear.engine.annotation.SpringGearEngine;
-import org.springgear.engine.context.SpringGearResultWrapper;
-import org.springgear.engine.handler.SpringGearHandler;
-import org.springgear.eventbus.SpringGearEventListener;
-import org.springgear.eventbus.annotation.SpringGearEvent;
+import org.springgear.core.AbstractSpringGearEngineExecutor;
+import org.springgear.core.annotation.SpringGearEngine;
+import org.springgear.core.context.SpringGearResultWrapper;
+import org.springgear.core.handler.SpringGearHandler;
+//import org.springgear.eventbus.SpringGearEventListener;
+//import org.springgear.eventbus.annotation.SpringGearEvent;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -28,9 +28,7 @@ import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * spring gear 框架核心业务流程处理类
@@ -57,14 +55,14 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
      *
      * @see SpringGearHandler
      */
-    private Multimap<String, SpringGearHandler> handlers = ArrayListMultimap.create();
+    private Map<String, List<SpringGearHandler>> handlers = new HashMap<>();
 
     /**
      * 用于监听
      *
      * @see SpringGearEventListener
      */
-    private Multimap<String, SpringGearEventListener> listeners = ArrayListMultimap.create();
+//    private Multimap<String, SpringGearEventListener> listeners = ArrayListMultimap.create();
 
     /**
      * 构造方法
@@ -80,15 +78,15 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         // 初始化 spring gear handler
         SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearHandler.class, handlers, (clazz) -> {
             Qualifier group = clazz.getAnnotation(Qualifier.class);
-            SpringGearEvent event = clazz.getAnnotation(SpringGearEvent.class);
-            if (event != null) {
-                SpringGearEventListener listener = applicationContext.getBean(event.bean());
-                if (listener != null) {
-                    listeners.put(group.value(), listener);
-                } else {
-                    log.warn("the bean of class {} have no instance, please use spring do it.", event.bean());
-                }
-            }
+//            SpringGearEvent event = clazz.getAnnotation(SpringGearEvent.class);
+//            if (event != null) {
+//                SpringGearEventListener listener = applicationContext.getBean(event.bean());
+//                if (listener != null) {
+//                    listeners.put(group.value(), listener);
+//                } else {
+//                    log.warn("the bean of class {} have no instance, please use spring do it.", event.bean());
+//                }
+//            }
             return group;
         });
 
@@ -96,7 +94,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
 
 
     /**
-     * 在初始化前，需要处理 spring gear engine 注解的相关方法。</br >
+     * 在初始化前，需要处理 spring gear core 注解的相关方法。</br >
      * 基于 {@link SpringGearProxyFactoryBean} 进行处理，非工厂方法不进行处理
      *
      * @param bean
@@ -110,7 +108,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         if (!SpringGearProxyFactoryBean.class.isAssignableFrom(bean.getClass())) {
             return bean;
         }
-        log.info("This bean '{}' need process to spring gear engine '{}'.", bean.getClass(), SpringGearProxyFactoryBean.class);
+        log.info("This bean '{}' need process to spring gear core '{}'.", bean.getClass(), SpringGearProxyFactoryBean.class);
 
         Class proxyInterface = ((SpringGearProxyFactoryBean) bean).getObjectType();
         Method[] methods = proxyInterface.getDeclaredMethods();
@@ -123,7 +121,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
                 continue;
             }
 
-            // 构建 spring gear engine
+            // 构建 spring gear core
             this.buildSpringGearEngine(engine, method);
         }
 
@@ -132,7 +130,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
 
 
     /**
-     * 构建 spring gear engine
+     * 构建 spring gear core
      *
      * @param engine
      * @param method
@@ -164,7 +162,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
 
         BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(springGearEngineExecutorClass)
                 .addPropertyValue("handlers", this.getBeanList(handlers, this.handlers, true))
-                .addPropertyValue("listeners", this.getBeanList(handlers, this.listeners, false))
+//                .addPropertyValue("listeners", this.getBeanList(handlers, this.listeners, false))
                 .addPropertyValue("wrapper", wrapper)
                 .setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME)
                 .getBeanDefinition();
@@ -179,8 +177,8 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
      * @param qualifiers
      * @return
      */
-    private <T> List<T> getBeanList(Qualifier[] qualifiers, Multimap<String, T> map, boolean sort) {
-        List<T> beans = Lists.newArrayList();
+    private <T> List<T> getBeanList(Qualifier[] qualifiers, Map<String,List<T>> map, boolean sort) {
+        List<T> beans = new ArrayList<>();
         for (Qualifier qualifier : qualifiers) {
 
             final Collection<T> elements = map.get(qualifier.value());

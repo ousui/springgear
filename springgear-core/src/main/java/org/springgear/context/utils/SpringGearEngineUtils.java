@@ -1,7 +1,6 @@
 package org.springgear.context.utils;
 
-import com.google.common.collect.Multimap;
-import org.springgear.engine.annotation.SpringGearEngine;
+import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.support.enums.SymbolEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -12,6 +11,8 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -68,7 +69,7 @@ public class SpringGearEngineUtils {
      * @param <T>
      * @see Qualifier
      */
-    public static <T> void groupBeanByQualifier(ApplicationContext applicationContext, Class<T> clazz, Multimap<String, T> map, Function<Class<T>, Qualifier> function) {
+    public static <T> void groupBeanByQualifier(ApplicationContext applicationContext, Class<T> clazz, Map<String, List<T>> map, Function<Class<T>, Qualifier> function) {
         Map<String, T> classMap = applicationContext.getBeansOfType(clazz);
         if (CollectionUtils.isEmpty(classMap)) {
             return;
@@ -83,7 +84,14 @@ public class SpringGearEngineUtils {
             if (group == null) {
                 return;
             }
-            map.put(group.value(), bean);
+
+            String key = group.value();
+            List<T> value = map.get(key);
+            if (value == null) {
+                value = new ArrayList<>();
+                map.put(key, value);
+            }
+            value.add(bean);
         });
     }
 

@@ -13,8 +13,6 @@ import org.springframework.util.Assert;
 
 /**
  * Spring Gear 框架配置入口
- * 杰夫 provider 自动扫描注册注册配置器。
- * 作为杰夫自动发布服务和自动创建 service 代理类的入口。
  * 类内执行顺序
  * 1. postProcessBeanDefinitionRegistry
  * 2. postProcessBeanFactory

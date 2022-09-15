@@ -1,10 +1,10 @@
 package org.springgear.beans.interceptor;
 
-import com.google.common.collect.Maps;
 import org.springgear.exception.SpringGearException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.util.CollectionUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +19,7 @@ public class SpringGearInterceptorChain implements SpringGearInterceptor<Void> {
 
     private int index = 0;
 
-    private Map<Integer, Object> result = Maps.newHashMap();
+    private Map<Integer, Object> result = new HashMap<>();
 
     public SpringGearInterceptorChain(List<SpringGearInterceptor> interceptors) {
         this.interceptors = interceptors;

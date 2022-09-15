@@ -1,7 +1,7 @@
 package org.springgear.context;
 
 import org.springgear.beans.AbstractSpringGearProxyProcessor;
-import org.springgear.engine.annotation.SpringGearProxy;
+import org.springgear.core.annotation.SpringGearProxy;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;

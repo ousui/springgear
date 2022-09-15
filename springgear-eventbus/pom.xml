@@ -8,16 +8,20 @@
         <version>2.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>springgear-core</artifactId>
+    <artifactId>springgear-eventbus</artifactId>
 
     <dependencies>
 
-        <!-- spring, 依赖引入其他模块 -->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context-support</artifactId>
+            <groupId>org.springgear</groupId>
+            <artifactId>springgear-core</artifactId>
         </dependency>
 
+        <!-- guava -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
     </dependencies>
 
 </project>
