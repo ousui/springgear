@@ -1,16 +1,12 @@
 package org.springgear.context;
 
-//import com.google.common.collect.ArrayListMultimap;
-//import com.google.common.collect.Lists;
-//import com.google.common.collect.Multimap;
+import org.springframework.beans.factory.InitializingBean;
 import org.springgear.beans.factory.SpringGearProxyFactoryBean;
 import org.springgear.context.utils.SpringGearEngineUtils;
 import org.springgear.core.AbstractSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.core.context.SpringGearResultWrapper;
 import org.springgear.core.handler.SpringGearHandler;
-//import org.springgear.eventbus.SpringGearEventListener;
-//import org.springgear.eventbus.annotation.SpringGearEvent;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -26,7 +22,6 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Method;
 import java.util.*;
 
@@ -37,7 +32,7 @@ import java.util.*;
  * @since 2020/12/13
  **/
 @Slf4j
-public class SpringGearEngineProcessor implements BeanPostProcessor, ApplicationContextAware {
+public class SpringGearEngineProcessor implements BeanPostProcessor, ApplicationContextAware, InitializingBean {
 
     /**
      * spring 上下文
@@ -58,13 +53,6 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     private Map<String, List<SpringGearHandler>> handlers = new HashMap<>();
 
     /**
-     * 用于监听
-     *
-     * @see SpringGearEventListener
-     */
-//    private Multimap<String, SpringGearEventListener> listeners = ArrayListMultimap.create();
-
-    /**
      * 构造方法
      *
      * @param springGearEngineExecutorClass
@@ -73,8 +61,8 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         this.springGearEngineExecutorClass = springGearEngineExecutorClass;
     }
 
-    @PostConstruct
-    public void init() {
+    @Override
+    public void afterPropertiesSet() {
         // 初始化 spring gear handler
         SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearHandler.class, handlers, (clazz) -> {
             Qualifier group = clazz.getAnnotation(Qualifier.class);

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProce
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.util.Assert;
+import org.springgear.beans.DefaultBeanDefinitionProcessor;
 
 /**
  * Spring Gear 框架配置入口
@@ -40,11 +41,17 @@ public class SpringGearStarter implements BeanDefinitionRegistryPostProcessor, I
 
     private final AbstractSpringGearProxyProcessor beanDefinitionProcessor;
 
+    public SpringGearStarter(String... basePackages) {
+        this(new DefaultBeanDefinitionProcessor(), basePackages);
+    }
+
     public SpringGearStarter(AbstractSpringGearProxyProcessor beanDefinitionProcessor, String... basePackages) {
         Assert.notEmpty(basePackages, "必须注入使用包名！");
         this.basePackages = basePackages;
         this.beanDefinitionProcessor = beanDefinitionProcessor;
     }
+
+
 
 
     @Override
