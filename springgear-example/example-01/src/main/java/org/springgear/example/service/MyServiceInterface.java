@@ -7,9 +7,23 @@ import org.springgear.core.annotation.SpringGearProxy;
 @SpringGearProxy
 public interface MyServiceInterface {
 
+    @SpringGearEngine(
+            handlers = @Qualifier("single")
+    )
+    String single(String input);
 
     @SpringGearEngine(
-            handlers = @Qualifier("example01")
+            handlers = @Qualifier("multi")
     )
-    String example(String input);
+    String multi(String input);
+
+    @SpringGearEngine(
+            handlers = @Qualifier("order")
+    )
+    String order(String input);
+
+    @SpringGearEngine(
+            handlers = {@Qualifier("order"), @Qualifier("multi"), @Qualifier("single")}
+    )
+    String mixed(String input);
 }

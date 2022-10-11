@@ -16,11 +16,13 @@ import org.springgear.example.service.MyServiceInterface;
 public class Main {
 
     @Configuration
+    // use this to scan handler
     @ComponentScan("org.springgear.example")
     static class Config {
 
         @Bean
         public SpringGearStarter starter() {
+            // use this to scan SpringGearProxy
             SpringGearStarter starter = new SpringGearStarter("org.springgear.example.service");
             return starter;
         }
@@ -37,9 +39,31 @@ public class Main {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(Config.class);
 
         MyServiceInterface service = ctx.getBean(MyServiceInterface.class);
-        System.out.println(service);
-        String out = service.example("this is input params");
-        System.out.println(out);
 
+        single(service);
+        multi(service);
+        order(service);
+        mixed(service);
+
+    }
+
+    public static void single(MyServiceInterface service) {
+        String out = service.single("this is single input params");
+        System.out.println(out);
+    }
+
+    public static void multi(MyServiceInterface service) {
+        String out = service.multi("this is multi input params");
+        System.out.println(out);
+    }
+
+    public static void order(MyServiceInterface service) {
+        String out = service.order("order");
+        System.out.println(out);
+    }
+
+    public static void mixed(MyServiceInterface service) {
+        String out = service.mixed("mixed");
+        System.out.println(out);
     }
 }

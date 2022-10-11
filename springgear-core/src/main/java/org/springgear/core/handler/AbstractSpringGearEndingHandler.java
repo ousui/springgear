@@ -1,5 +1,6 @@
 package org.springgear.core.handler;
 
+import org.springframework.core.Ordered;
 import org.springgear.core.context.SpringGearContext;
 
 /**
@@ -7,7 +8,7 @@ import org.springgear.core.context.SpringGearContext;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public abstract class AbstractSpringGearEndingHandler<REQ, RESP> extends AbstractSpringGearHandler<REQ, RESP> {
+public abstract class AbstractSpringGearEndingHandler<REQ, RESP> extends AbstractSpringGearOrderedHandler<REQ, RESP> {
 
     /**
      * 调用结束方法，返回一个值，抽象方法会将此值放入 response
@@ -27,9 +28,7 @@ public abstract class AbstractSpringGearEndingHandler<REQ, RESP> extends Abstrac
     }
 
     @Override
-    public final int getOrder() {
+    public int getOrder() {
         return LOWEST_PRECEDENCE;
     }
-
-
 }

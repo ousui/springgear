@@ -8,7 +8,7 @@ import org.springframework.core.Ordered;
  *
  * @author SHUAI.W 2018-01-10
  **/
-public interface SpringGearHandler<REQ, RESP> extends Ordered {
+public interface SpringGearHandler<REQ, RESP> {
 
     /**
      * 是否支持本 handler 处理。

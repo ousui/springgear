@@ -126,7 +126,7 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
 
                 if (log.isDebugEnabled()) {
                     log.debug("TS[{}-{}] Handler '{}#{}' finished work. duration {} ms. context is: {}",
-                            source, timestamp, handler.getClass().getSimpleName(), handler.getOrder(), duration, context);
+                            source, timestamp, handler.getClass().getSimpleName(), null, duration, context);
 //                            source, timestamp, handler.getClass().getSimpleName(), handler.getOrder(), duration, context);
                 }
 

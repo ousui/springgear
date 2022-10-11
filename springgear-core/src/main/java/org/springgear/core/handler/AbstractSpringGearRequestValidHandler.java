@@ -9,7 +9,7 @@ import org.springgear.support.constants.HttpStatus;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearHandler<REQ, RESP> {
+public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearOrderedHandler<REQ, RESP> {
 
     public abstract void verify(REQ request, Object... others) throws IllegalArgumentException;
 
@@ -22,11 +22,8 @@ public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends A
         }
     }
 
-
     @Override
-    public final int getOrder() {
-        return HIGHEST_PRECEDENCE + 10000;
+    public int getOrder() {
+        return HIGHEST_PRECEDENCE;
     }
-
-
 }

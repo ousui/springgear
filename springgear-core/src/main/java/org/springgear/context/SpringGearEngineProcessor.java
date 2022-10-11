@@ -177,6 +177,8 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         }
         if (sort) {
             // 使用 spring 提供的 ordered 比较器进行比较排序。
+//            AnnotationAwareOrderComparator x = new AnnotationAwareOrderComparator();
+//            x.
             AnnotationAwareOrderComparator.sort(beans);
         }
         return beans;
