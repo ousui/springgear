@@ -1,36 +1,28 @@
 package org.springgear.example;
 
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springgear.beans.AbstractSpringGearProxyProcessor;
-import org.springgear.beans.DefaultBeanDefinitionProcessor;
+import org.springframework.context.annotation.*;
+import org.springgear.beans.annotation.SpringGearBeanRegister;
 import org.springgear.context.SpringGearEngineProcessor;
-import org.springgear.context.SpringGearStarter;
-import org.springgear.core.AbstractSpringGearEngineExecutor;
-import org.springgear.core.DefaultSpringGearEngineExecutor;
 import org.springgear.example.service.MyServiceInterface;
 
 public class Main {
 
     @Configuration
     // use this to scan handler
-    @ComponentScan("org.springgear.example")
+    @ComponentScan(value = "org.springgear.example")
     static class Config {
 
         @Bean
-        public SpringGearStarter starter() {
-            // use this to scan SpringGearProxy
-            SpringGearStarter starter = new SpringGearStarter("org.springgear.example.service");
-            return starter;
+        public SpringGearBeanRegister springGearBeanRegister() {
+            return new SpringGearBeanRegister("org.springgear.example.service");
         }
 
         @Bean
         public SpringGearEngineProcessor springGearEngineProcessor() {
-            return new SpringGearEngineProcessor(DefaultSpringGearEngineExecutor.class);
+            return new SpringGearEngineProcessor();
         }
+
     }
 
     public static void main(String[] args) {

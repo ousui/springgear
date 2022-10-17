@@ -13,7 +13,8 @@ import org.springframework.util.StringUtils;
 import java.util.Collection;
 
 /**
- * jsf provider bean 处理器
+ * proxy 代理类生成处理器，支持代理类生成过程中进行修改
+ * <p>
  * 1. scan 期间修改 接口 类型的 bean，为其进行自动代理。
  * 2. scan 期间生成 jsf bean(支持属性注入)
  * 2. before init 期间，生成 workflow 的支持类。
@@ -76,7 +77,7 @@ public abstract class AbstractSpringGearProxyProcessor implements ApplicationCon
 
         SpringGearProxy proxyAnnotation = (SpringGearProxy) proxyInterface.getAnnotation(SpringGearProxy.class);
         if (proxyAnnotation == null) {
-            log.info("this component is not '{}', don't process.", SpringGearProxy.class);
+            log.info("this component is not '{}', need not process.", SpringGearProxy.class);
             return;
         }
 

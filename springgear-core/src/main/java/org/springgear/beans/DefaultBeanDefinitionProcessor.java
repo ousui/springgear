@@ -26,9 +26,7 @@ public class DefaultBeanDefinitionProcessor extends AbstractSpringGearProxyProce
          * 放入两个构造参数
          */
         definition.getConstructorArgumentValues().addGenericArgumentValue(targetClass);
-
         definition.setBeanClass(SpringGearProxyFactoryBean.class);
-
         definition.applyDefaults(new BeanDefinitionDefaults());
 
         /**

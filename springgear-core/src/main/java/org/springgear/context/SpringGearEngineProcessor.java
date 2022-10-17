@@ -4,6 +4,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springgear.beans.factory.SpringGearProxyFactoryBean;
 import org.springgear.context.utils.SpringGearEngineUtils;
 import org.springgear.core.AbstractSpringGearEngineExecutor;
+import org.springgear.core.DefaultSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.core.context.SpringGearResultWrapper;
 import org.springgear.core.handler.SpringGearHandler;
@@ -55,8 +56,11 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     /**
      * 构造方法
      *
-     * @param springGearEngineExecutorClass
      */
+    public SpringGearEngineProcessor() {
+        this(DefaultSpringGearEngineExecutor.class);
+    }
+
     public SpringGearEngineProcessor(Class<? extends AbstractSpringGearEngineExecutor> springGearEngineExecutorClass) {
         this.springGearEngineExecutorClass = springGearEngineExecutorClass;
     }
@@ -165,7 +169,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
      * @param qualifiers
      * @return
      */
-    private <T> List<T> getBeanList(Qualifier[] qualifiers, Map<String,List<T>> map, boolean sort) {
+    private <T> List<T> getBeanList(Qualifier[] qualifiers, Map<String, List<T>> map, boolean sort) {
         List<T> beans = new ArrayList<>();
         for (Qualifier qualifier : qualifiers) {
 
