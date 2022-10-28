@@ -69,7 +69,7 @@ public class SpringGearBeanRegister extends AbstractSpringGearBeanRegistrar impl
 //        保持空
     }
 
-    public List<String> basePackage(String basePackage) {
+    public List<String> setBasePackage(String basePackage) {
         if (this.basePackages == null) {
             this.basePackages = new ArrayList<>();
         }

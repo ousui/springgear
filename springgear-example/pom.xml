@@ -9,7 +9,10 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>example-01</module>
+        <module>example-01-start-xml_config</module>
+        <module>example-02-start-java_config</module>
+        <module>example-03-start-annotation_config</module>
+        <module>example-04-simple_use</module>
     </modules>
 
     <packaging>pom</packaging>

@@ -9,6 +9,6 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>example-01</artifactId>
+    <artifactId>example-01-start-xml_config</artifactId>
 
 </project>
