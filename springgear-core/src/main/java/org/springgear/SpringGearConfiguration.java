@@ -3,13 +3,12 @@ package org.springgear;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
-import org.springframework.core.annotation.MergedAnnotation;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springgear.context.SpringGearEngineProcessor;
-import org.springgear.core.AbstractSpringGearEngineExecutor;
-import org.springgear.core.DefaultSpringGearEngineExecutor;
+import org.springgear.core.register.context.SpringGearEngineProcessor;
+import org.springgear.core.execute.AbstractSpringGearEngineExecutor;
+import org.springgear.core.execute.DefaultSpringGearEngineExecutor;
 
-@Configuration(proxyBeanMethods = false)
+@Configuration
 class SpringGearConfiguration implements ImportAware {
 
     private EnableSpringGear enableSpringGearAnno;

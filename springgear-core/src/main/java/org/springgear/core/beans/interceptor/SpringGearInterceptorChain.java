@@ -1,4 +1,4 @@
-package org.springgear.beans.interceptor;
+package org.springgear.core.beans.interceptor;
 
 import org.springgear.exception.SpringGearException;
 import lombok.extern.slf4j.Slf4j;

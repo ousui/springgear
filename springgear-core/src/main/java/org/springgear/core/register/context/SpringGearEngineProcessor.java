@@ -1,10 +1,10 @@
-package org.springgear.context;
+package org.springgear.core.register.context;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springgear.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.context.utils.SpringGearEngineUtils;
-import org.springgear.core.AbstractSpringGearEngineExecutor;
-import org.springgear.core.DefaultSpringGearEngineExecutor;
+import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.core.register.context.utils.SpringGearEngineUtils;
+import org.springgear.core.execute.AbstractSpringGearEngineExecutor;
+import org.springgear.core.execute.DefaultSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.core.context.SpringGearResultWrapper;
 import org.springgear.core.handler.SpringGearHandler;

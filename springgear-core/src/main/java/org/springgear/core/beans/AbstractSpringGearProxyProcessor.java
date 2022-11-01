@@ -1,4 +1,4 @@
-package org.springgear.beans;
+package org.springgear.core.beans;
 
 import org.springgear.core.annotation.SpringGearProxy;
 import lombok.extern.slf4j.Slf4j;

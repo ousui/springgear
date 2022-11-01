@@ -1,4 +1,4 @@
-package org.springgear.core;
+package org.springgear.core.execute;
 
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;

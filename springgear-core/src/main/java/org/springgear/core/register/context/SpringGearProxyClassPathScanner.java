@@ -1,6 +1,6 @@
-package org.springgear.context;
+package org.springgear.core.register.context;
 
-import org.springgear.beans.AbstractSpringGearProxyProcessor;
+import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
 import org.springgear.core.annotation.SpringGearProxy;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;

@@ -1,4 +1,4 @@
-package org.springgear.beans.annotation;
+package org.springgear.core.register;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,15 +9,20 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springgear.EnableSpringGear;
-import org.springgear.beans.AbstractSpringGearProxyProcessor;
-import org.springgear.beans.DefaultBeanDefinitionProcessor;
+import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
+import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpringGearBeanRegistrarImport extends AbstractSpringGearBeanRegistrar implements ImportBeanDefinitionRegistrar {
+/**
+ * 使用 注解 形式的注入
+ *
+ * @since 2.1.0
+ */
+public class SpringGearBeanRegistrarAnnotation extends AbstractSpringGearBeanRegistrar implements ImportBeanDefinitionRegistrar {
 
 
     @Override
@@ -26,14 +31,36 @@ public class SpringGearBeanRegistrarImport extends AbstractSpringGearBeanRegistr
         if (false == annotations.isPresent(EnableSpringGear.class)) {
             return;
         }
-        List<String> basePackages = new ArrayList<>();
 
+        // 获取注解
         EnableSpringGear springGearAnno = annotations.get(EnableSpringGear.class).synthesize();
 
+        List<String> basePackages = this.getBasePackages(importingClassMetadata, springGearAnno);
+
+        AbstractSpringGearProxyProcessor processor;
+        if (springGearAnno.processor() == null) {
+            processor = new DefaultBeanDefinitionProcessor();
+        } else {
+            processor = new DefaultBeanDefinitionProcessor();
+        }
+
+        this.registerBeanDefinitions(registry, basePackages, processor);
+    }
+
+    /**
+     * 获取 base packages
+     *
+     * @param importingClassMetadata
+     * @param springGearAnno
+     * @return
+     */
+    private static List<String> getBasePackages(AnnotationMetadata importingClassMetadata, EnableSpringGear springGearAnno) {
+        List<String> basePackages = new ArrayList<>();
         basePackages.addAll(
                 Arrays.stream(springGearAnno.basePackages()).filter(StringUtils::hasText).collect(Collectors.toList())
         );
 
+        // 查找 ComponentScan 的包路径
         AnnotationAttributes componentScanAnno = AnnotationAttributes
                 .fromMap(importingClassMetadata.getAnnotationAttributes(ComponentScan.class.getName()));
 
@@ -47,15 +74,7 @@ public class SpringGearBeanRegistrarImport extends AbstractSpringGearBeanRegistr
             basePackages.addAll(Arrays.stream(componentScanAnno.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName)
                     .collect(Collectors.toList()));
         }
-
-        AbstractSpringGearProxyProcessor processor;
-        if (springGearAnno.processor() == null) {
-            processor = new DefaultBeanDefinitionProcessor();
-        } else {
-            processor = new DefaultBeanDefinitionProcessor();
-        }
-
-        this.registerBeanDefinitions(registry, basePackages, processor);
+        return basePackages;
     }
 
 }

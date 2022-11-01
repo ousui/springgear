@@ -3,8 +3,6 @@ package org.springgear.example;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springgear.EnableSpringGear;
-import org.springgear.beans.annotation.SpringGearBeanRegister;
-import org.springgear.context.SpringGearEngineProcessor;
 import org.springgear.example.service.MyServiceInterface;
 
 public class Main {
