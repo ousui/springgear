@@ -19,10 +19,6 @@ public class SpringGearException extends Exception {
     @Setter
     private long timestamp;
 
-    @Getter
-    @Setter
-    private boolean monitored = true;
-
     public SpringGearException(String msg) {
         this(msg, HttpStatus.SC_INTERNAL_SERVER_ERROR);
     }

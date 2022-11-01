@@ -41,7 +41,7 @@ springgear-parent                   // 父模块
     |- documents                    // 文档存储，不做编译使用
     |- springgear-bom               // 框架的清单，里面包含了所有 springgear 模块的依赖版本，一般情况下在依赖管理中 import 这个包，即可管理所有其包含的版本
     |- springgear-context           // 框架上下文，主要包含处理上下文流程的实体类和注解
-    |- springgear-engine            // 框架核心引擎，核心处理流程
+    |- springgear-core            // 框架核心引擎，核心处理流程
     |- springgear-extends-parent    // 所有扩展功能
         |- springgear-extend-orika      // 扩展 - 框架对 orika 映射框架的支持
     |- springgear-support           // 框架的支持类，非核心的工具类等

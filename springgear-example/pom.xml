@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.springgear.example</groupId>
+    <artifactId>springgear-example-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <modules>
+        <module>example-01-start-xml_config</module>
+        <module>example-02-start-java_config</module>
+        <module>example-03-start-annotation_config</module>
+        <module>example-04-simple_use</module>
+    </modules>
+
+    <packaging>pom</packaging>
+
+    <properties>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springgear</groupId>
+                <artifactId>springgear-bom</artifactId>
+                <version>2.1.0-SNAPSHOT</version>
+                <scope>import</scope>
+                <type>pom</type>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springgear</groupId>
+            <artifactId>springgear-core</artifactId>
+        </dependency>
+    </dependencies>
+
+</project>
