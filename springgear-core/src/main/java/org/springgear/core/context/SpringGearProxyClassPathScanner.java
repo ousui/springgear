@@ -1,4 +1,4 @@
-package org.springgear.core.register.context;
+package org.springgear.core.context;
 
 import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
 import org.springgear.core.annotation.SpringGearProxy;
@@ -14,6 +14,7 @@ import java.util.Set;
 
 /**
  * 类扫描及后续处理的一个 scanner.
+ * 主要是扫描 {@link org.springgear.core.engine.SpringGearEngineProcessor} 的代理
  *
  * @author
  **/

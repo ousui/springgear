@@ -2,8 +2,8 @@ package org.springgear.example;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
-import org.springgear.core.register.SpringGearBeanRegistrarNormal;
-import org.springgear.core.register.context.SpringGearEngineProcessor;
+import org.springgear.core.context.registrars.SpringGearBeanNormalRegistrar;
+import org.springgear.core.engine.SpringGearEngineProcessor;
 import org.springgear.example.service.MyServiceInterface;
 
 public class Main {
@@ -14,8 +14,8 @@ public class Main {
     static class Config {
 
         @Bean
-        public SpringGearBeanRegistrarNormal springGearBeanRegister() {
-            return new SpringGearBeanRegistrarNormal("org.springgear.example.service");
+        public SpringGearBeanNormalRegistrar springGearBeanRegister() {
+            return new SpringGearBeanNormalRegistrar("org.springgear.example.service");
         }
 
         @Bean

@@ -1,5 +1,6 @@
-package org.springgear.core.execute;
+package org.springgear.core.engine.execute;
 
+import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;
 
@@ -8,7 +9,8 @@ import org.springgear.exception.SpringGearException;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public interface SpringGearEngineInterface<REQ, RESP> {
+public interface SpringGearEngineInterface<REQ, RESP, CTX extends SpringGearContext> {
+
 
     /**
      * 简化方式，只传递 request 即可。

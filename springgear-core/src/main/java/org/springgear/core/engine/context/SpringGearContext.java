@@ -1,8 +1,9 @@
-package org.springgear.core.context;
+package org.springgear.core.engine.context;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.util.Assert;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import java.util.Optional;
  * @author SHUAI.W 2018-01-10
  **/
 @ToString
-public class SpringGearContext<REQ, RESP> implements Serializable, Cloneable {
+public class SpringGearContext<REQ, RESP> implements Serializable {
 
     /**
      * 入参，只读
@@ -42,21 +43,32 @@ public class SpringGearContext<REQ, RESP> implements Serializable, Cloneable {
     @Getter
     private final long timestamp;
 
-    /**
-     * 用于参数传递
-     */
-//    @JsonProperty
-    private final Map<String, Object> parameters;
 
-    public SpringGearContext(REQ request, String source, long timestamp) {
+    @Getter
+    private final Object[] args;
+
+    @Getter
+    private Map<String, Object> parameters;
+
+
+    public SpringGearContext(REQ request, String source, long timestamp, Object[] args) {
         this.request = request;
         this.source = source;
         this.timestamp = timestamp;
+        this.args = args;
         this.parameters = new HashMap<>();
     }
 
+    public <T> T getArgument(int position) {
+        Assert.notEmpty(args, "[dev] May be your method have no any arguments?");
+        Assert.isTrue(position >= 0, "[dev] the position must is not null!");
+        Assert.isTrue(position < args.length,
+                String.format("[dev] The arguments length is %s, but your position is %s, may be no Object?", args.length, position)
+        );
+        return (T) this.args[position];
+    }
 
-    /**
+        /**
      * 添加参数
      *
      * @param key
@@ -78,10 +90,4 @@ public class SpringGearContext<REQ, RESP> implements Serializable, Cloneable {
         return value.orElse(null);
     }
 
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        SpringGearContext<REQ, RESP> context = (SpringGearContext<REQ, RESP>) super.clone();
-        context.parameters.putAll(new HashMap<>(this.parameters));
-        return context;
-    }
 }

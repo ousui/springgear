@@ -2,8 +2,8 @@ package org.springgear.core.beans;
 
 import org.springgear.core.beans.interceptor.SpringGearInterceptor;
 import org.springgear.core.beans.interceptor.SpringGearInterceptorChain;
-import org.springgear.core.register.context.utils.SpringGearEngineUtils;
-import org.springgear.core.execute.SpringGearEngineInterface;
+import org.springgear.core.support.SpringGearEngineUtils;
+import org.springgear.core.engine.execute.SpringGearEngineInterface;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;

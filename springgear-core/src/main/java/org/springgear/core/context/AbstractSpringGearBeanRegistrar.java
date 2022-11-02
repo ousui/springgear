@@ -1,4 +1,4 @@
-package org.springgear.core.register;
+package org.springgear.core.context;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -7,7 +7,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.CollectionUtils;
 import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
 import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
-import org.springgear.core.register.context.SpringGearProxyClassPathScanner;
+import org.springgear.core.context.SpringGearProxyClassPathScanner;
 
 import java.util.Collections;
 import java.util.List;

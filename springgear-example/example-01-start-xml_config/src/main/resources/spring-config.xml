@@ -7,10 +7,10 @@
 
     <context:component-scan base-package="org.springgear.example" />
 
-    <bean class="org.springgear.core.register.SpringGearBeanRegistrarNormal">
+    <bean class="org.springgear.core.context.registrars.SpringGearBeanNormalRegistrar">
         <property name="basePackages" value="org.springgear.example.service" />
     </bean>
 
-    <bean class="org.springgear.core.register.context.SpringGearEngineProcessor" />
+    <bean class="org.springgear.core.engine.SpringGearEngineProcessor" />
 
 </beans>

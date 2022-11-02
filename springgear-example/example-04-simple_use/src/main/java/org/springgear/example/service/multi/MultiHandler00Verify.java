@@ -3,9 +3,7 @@ package org.springgear.example.service.multi;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
-import org.springgear.core.context.SpringGearContext;
-import org.springgear.core.handler.AbstractSpringGearEndingHandler;
-import org.springgear.core.handler.AbstractSpringGearRequestValidHandler;
+import org.springgear.core.engine.handler.AbstractSpringGearRequestValidHandler;
 
 @Qualifier("multi")
 @Component

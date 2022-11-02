@@ -2,7 +2,7 @@ package org.springgear.eventbus;
 
 import com.google.common.eventbus.Subscribe;
 import org.apache.logging.log4j.ThreadContext;
-import org.springgear.core.context.SpringGearContext;
+import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.eventbus.annotation.SpringGearEvent;
 
 /**

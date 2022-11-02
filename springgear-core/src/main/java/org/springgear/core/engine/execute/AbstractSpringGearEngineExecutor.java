@@ -1,13 +1,10 @@
-package org.springgear.core.execute;
+package org.springgear.core.engine.execute;
 
-//import com.google.common.eventbus.AsyncEventBus;
-import org.springgear.core.context.EmptyRequest;
-import org.springgear.core.context.SpringGearContext;
-import org.springgear.core.context.SpringGearResultOriginalWrapper;
-import org.springgear.core.context.SpringGearResultWrapper;
-import org.springgear.core.handler.SpringGearHandler;
-//import org.springgear.eventbus.SpringGearEventListener;
-//import org.springgear.eventbus.annotation.SpringGearEvent;
+import org.springgear.core.engine.SpringGearEngineHandler;
+import org.springgear.core.engine.context.EmptyRequest;
+import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.core.engine.context.SpringGearResultOriginalWrapper;
+import org.springgear.core.engine.context.SpringGearResultWrapper;
 import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;
@@ -38,13 +35,7 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
      * 使用的 handlers
      */
     @Setter
-    private List<SpringGearHandler<?, ?>> handlers;
-
-    /**
-     * 要注册的监听器
-     */
-//    @Setter
-//    private List<SpringGearEventListener> listeners;
+    private List<SpringGearEngineHandler<?, ?>> handlers;
 
     @Setter
     private SpringGearResultWrapper wrapper;
@@ -58,7 +49,6 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
     public void afterPropertiesSet() throws Exception {
         // TODO 将处理流程进行扩展的附加输出，不再进行耦合
         this.initResultWrapper();
-//        this.initEventBus();
     }
 
     /**
@@ -70,18 +60,6 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
         }
         wrapper = new SpringGearResultOriginalWrapper();
     }
-
-    /**
-     * 初始化 eventBus
-     */
-//    private void initEventBus() {
-//        if (CollectionUtils.isEmpty(listeners)) {
-//            return;
-//        }
-//
-//        eventBus = new AsyncEventBus(beanName, Executors.newFixedThreadPool(5));
-//        listeners.forEach(eventBus::register);
-//    }
 
     @Override
     public Object execute(Object request, long timestamp, Object... others) throws SpringGearException {
@@ -98,7 +76,8 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
         }
 
         String source = this.getSource();
-        SpringGearContext context = new SpringGearContext(request, source, timestamp);
+//        SpringGearContext context = this.newContextInstance(request, timestamp, others);
+        SpringGearContext context = new SpringGearContext(request, source, timestamp, others);
 
         if (log.isDebugEnabled()) { // 入参记录，方便问题跟踪，只记录一次就好。
             log.debug("TS[{}-{}] Handler '{}' start work. request is: {}", source, timestamp, beanName, request);
@@ -107,9 +86,9 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
         /**
          * 核心 handlers 循环处理
          */
-        for (SpringGearHandler<?, ?> handler : handlers) {
+        for (SpringGearEngineHandler<?, ?> handler : handlers) {
 
-            if (!handler.supports(context, others)) { // 如果不支持，则 continue。
+            if (!handler.supports(context)) { // 如果不支持，则 continue。
                 continue;
             }
 
@@ -117,7 +96,7 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
 //            SpringGearEvent sge = handler.getClass().getAnnotation(SpringGearEvent.class);
             Throwable ex = null;
             try {
-                handler.handle(context, others);
+                handler.handle(context);
             } catch (Throwable e) { // 捕获并处理异常
                 ex = e;
                 this.handleThrowable(context, e);
@@ -130,16 +109,6 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
 //                            source, timestamp, handler.getClass().getSimpleName(), handler.getOrder(), duration, context);
                 }
 
-//                if (eventBus != null && sge != null) {
-//                    if (sge.copied()) {
-//                        // TODO
-//                        //clone 对象，防止地址变更对数据的影响
-//                    }
-//                    log.debug("TS[{}-{}] Handler '{}#{}' has event, do post: {}", source, timestamp, handler.getClass().getSimpleName(), handler.getOrder(), context);
-//                    eventBus.post(new Object[]{
-//                            context, ex, handler.getClass()
-//                    });
-//                }
 
             }
 

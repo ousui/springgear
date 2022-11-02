@@ -4,16 +4,16 @@ import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
 import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
 import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
-import org.springgear.core.register.SpringGearBeanRegistrarAnnotation;
-import org.springgear.core.execute.AbstractSpringGearEngineExecutor;
-import org.springgear.core.execute.DefaultSpringGearEngineExecutor;
+import org.springgear.core.context.registrars.SpringGearBeanAnnotationRegistrar;
+import org.springgear.core.engine.execute.AbstractSpringGearEngineExecutor;
+import org.springgear.core.engine.execute.DefaultSpringGearEngineExecutor;
 
 import java.lang.annotation.*;
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({SpringGearConfiguration.class, SpringGearBeanRegistrarAnnotation.class})
+@Import({SpringGearConfiguration.class, SpringGearBeanAnnotationRegistrar.class})
 public @interface EnableSpringGear {
 
     /**

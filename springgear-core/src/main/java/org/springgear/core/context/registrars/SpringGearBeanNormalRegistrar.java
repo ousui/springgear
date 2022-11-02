@@ -1,4 +1,4 @@
-package org.springgear.core.register;
+package org.springgear.core.context.registrars;
 
 import lombok.Setter;
 import org.springframework.util.StringUtils;
@@ -8,6 +8,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
+import org.springgear.core.context.AbstractSpringGearBeanRegistrar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ import java.util.stream.Collectors;
  * @since 1.0.0 2018-01-05
  **/
 @Slf4j
-public class SpringGearBeanRegistrarNormal extends AbstractSpringGearBeanRegistrar implements BeanDefinitionRegistryPostProcessor {
+public class SpringGearBeanNormalRegistrar extends AbstractSpringGearBeanRegistrar implements BeanDefinitionRegistryPostProcessor {
 
     /**
      * 需要扫描的包。
@@ -39,11 +40,11 @@ public class SpringGearBeanRegistrarNormal extends AbstractSpringGearBeanRegistr
     @Setter
     private AbstractSpringGearProxyProcessor beanDefinitionProcessor;
 
-    public SpringGearBeanRegistrarNormal() {
+    public SpringGearBeanNormalRegistrar() {
         this("");
     }
 
-    public SpringGearBeanRegistrarNormal(String... basePackages) {
+    public SpringGearBeanNormalRegistrar(String... basePackages) {
         if (this.basePackages == null) {
             this.basePackages = new ArrayList<>();
         }

@@ -1,13 +1,12 @@
-package org.springgear.core.register.context;
+package org.springgear.core.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.core.register.context.utils.SpringGearEngineUtils;
-import org.springgear.core.execute.AbstractSpringGearEngineExecutor;
-import org.springgear.core.execute.DefaultSpringGearEngineExecutor;
+import org.springgear.core.support.SpringGearEngineUtils;
+import org.springgear.core.engine.execute.AbstractSpringGearEngineExecutor;
+import org.springgear.core.engine.execute.DefaultSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
-import org.springgear.core.context.SpringGearResultWrapper;
-import org.springgear.core.handler.SpringGearHandler;
+import org.springgear.core.engine.context.SpringGearResultWrapper;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -49,9 +48,9 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     /**
      * 用于存储
      *
-     * @see SpringGearHandler
+     * @see SpringGearEngineHandler
      */
-    private Map<String, List<SpringGearHandler>> handlers = new HashMap<>();
+    private Map<String, List<SpringGearEngineHandler>> handlers = new HashMap<>();
 
     /**
      * 构造方法
@@ -68,7 +67,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     @Override
     public void afterPropertiesSet() {
         // 初始化 spring gear handler
-        SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearHandler.class, handlers, (clazz) -> {
+        SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearEngineHandler.class, handlers, (clazz) -> {
             Qualifier group = clazz.getAnnotation(Qualifier.class);
 //            SpringGearEvent event = clazz.getAnnotation(SpringGearEvent.class);
 //            if (event != null) {
@@ -108,15 +107,12 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         // 找到接口中所有标记 @SpringGearEngine 注解的方法，未标记不做处理
         for (Method method : methods) {
             SpringGearEngine engine = AnnotationUtils.findAnnotation(method, SpringGearEngine.class);
-
             if (engine == null) {
                 continue;
             }
-
             // 构建 spring gear core
             this.buildSpringGearEngine(engine, method);
         }
-
         return bean;
     }
 

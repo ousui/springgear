@@ -1,4 +1,4 @@
-package org.springgear.core.register;
+package org.springgear.core.context.registrars;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ComponentScan;
@@ -11,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springgear.EnableSpringGear;
 import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
 import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
+import org.springgear.core.context.AbstractSpringGearBeanRegistrar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,7 +23,7 @@ import java.util.stream.Collectors;
  *
  * @since 2.1.0
  */
-public class SpringGearBeanRegistrarAnnotation extends AbstractSpringGearBeanRegistrar implements ImportBeanDefinitionRegistrar {
+public class SpringGearBeanAnnotationRegistrar extends AbstractSpringGearBeanRegistrar implements ImportBeanDefinitionRegistrar {
 
 
     @Override
