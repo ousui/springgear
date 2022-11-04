@@ -1,32 +1,34 @@
 package org.springgear.core.context;
 
-import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
+import org.springframework.beans.factory.support.AbstractBeanDefinition;
+import org.springframework.beans.factory.support.BeanDefinitionDefaults;
+import org.springframework.beans.factory.support.BeanDefinitionRegistry;
+import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springgear.core.annotation.SpringGearProxy;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
-import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
 
 import java.util.Arrays;
 import java.util.Set;
 
 /**
  * 类扫描及后续处理的一个 scanner.
- * 主要是扫描 {@link org.springgear.core.engine.SpringGearEngineProcessor} 的代理
+ * 主要是扫描 {@link SpringGearProxy} 的代理接口，形成可执行的接口
  *
  * @author
+ * @see SpringGearProxy
  **/
 public class SpringGearProxyClassPathScanner extends ClassPathBeanDefinitionScanner {
 
-    private final AbstractSpringGearProxyProcessor beanDefinitionProcessor;
 
-    public SpringGearProxyClassPathScanner(BeanDefinitionRegistry registry, AbstractSpringGearProxyProcessor beanDefinitionProcessor) {
+    public SpringGearProxyClassPathScanner(BeanDefinitionRegistry registry) {
         super(registry, false);
         // 使用注解 {@link SpringGearProxy} 的过滤保证可以找到需要代理的类
         this.addIncludeFilter(new AnnotationTypeFilter(SpringGearProxy.class));
-        this.beanDefinitionProcessor = beanDefinitionProcessor;
     }
 
 
@@ -44,10 +46,57 @@ public class SpringGearProxyClassPathScanner extends ClassPathBeanDefinitionScan
             logger.warn("No Spring Gear Interface found in package: '" + Arrays.toString(basePackages) + "'. Please check your configuration.");
             return holders;
         }
-        // 自动代理接口实现
-        beanDefinitionProcessor.autoProxyInterface(holders);
+
+        for (BeanDefinitionHolder holder : holders) {
+            this.autoProxyInterface(holder);
+        }
+
         return holders;
     }
+
+    public void autoProxyInterface(BeanDefinitionHolder holder) {
+        GenericBeanDefinition definition = (GenericBeanDefinition) holder.getBeanDefinition();
+        String targetBeanClassName = definition.getBeanClassName();
+        String beanName = holder.getBeanName();
+
+        Class<?> proxyInterface;
+        try {
+            proxyInterface = Class.forName(targetBeanClassName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        SpringGearProxy proxyAnnotation = (SpringGearProxy) proxyInterface.getAnnotation(SpringGearProxy.class);
+        if (proxyAnnotation == null) {
+            logger.info(String.format("this component is not '%s', need not process.", SpringGearProxy.class));
+            return;
+        }
+
+        logger.debug(
+                String.format("Creating SpringGearProxy Interface implement FactoryBean with name '%s' and definition bean '%s'",
+                        beanName, definition.getBeanClassName())
+        );
+
+        /**
+         * 放入两个构造参数
+         */
+        definition.getConstructorArgumentValues().addGenericArgumentValue(targetBeanClassName);
+        definition.setBeanClass(SpringGearProxyFactoryBean.class);
+        definition.applyDefaults(new BeanDefinitionDefaults());
+
+        /**
+         * 默认按照类型注入
+         */
+        definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
+    }
+
+//    private void registerBeanDefinition(String name, BeanDefinition beanDefinition) {
+//        logger.info(String.format("Creating bean with name '%s' for '%s'.", name, beanDefinition.getBeanClassName()));
+//
+//        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
+//        beanFactory.registerBeanDefinition(name, beanDefinition);
+//    }
 
     /**
      * 必须是接口类型

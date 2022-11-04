@@ -2,7 +2,7 @@ package org.springgear.example;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
-import org.springgear.core.context.registrars.SpringGearBeanNormalRegistrar;
+import org.springgear.core.context.registrar.SpringGearBeanNormalRegistrar;
 import org.springgear.core.engine.SpringGearEngineProcessor;
 import org.springgear.example.service.MyServiceInterface;
 

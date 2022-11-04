@@ -5,9 +5,6 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.util.CollectionUtils;
-import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
-import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
-import org.springgear.core.context.SpringGearProxyClassPathScanner;
 
 import java.util.Collections;
 import java.util.List;
@@ -23,7 +20,7 @@ public abstract class AbstractSpringGearBeanRegistrar implements ResourceLoaderA
     private static final List<String> DEFAULT_BASE_PACKAGES = Collections.singletonList("*");
 
 
-    protected void registerBeanDefinitions(BeanDefinitionRegistry registry, List<String> basePackages, AbstractSpringGearProxyProcessor processor) {
+    protected void registerBeanDefinitions(BeanDefinitionRegistry registry, List<String> basePackages) {
 
         if (CollectionUtils.isEmpty(basePackages)) {
             basePackages = DEFAULT_BASE_PACKAGES;
@@ -31,11 +28,7 @@ public abstract class AbstractSpringGearBeanRegistrar implements ResourceLoaderA
 
         log.debug("start SpringGearProxyClass scan, packages: {}", basePackages);
 
-        if (processor == null) {
-            processor = new DefaultBeanDefinitionProcessor();
-        }
-
-        SpringGearProxyClassPathScanner scanner = new SpringGearProxyClassPathScanner(registry, processor);
+        SpringGearProxyClassPathScanner scanner = new SpringGearProxyClassPathScanner(registry);
 
         scanner.setResourceLoader(this.resourceLoader);
         scanner.scan(basePackages.toArray(new String[basePackages.size()]));

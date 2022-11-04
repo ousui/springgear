@@ -1,4 +1,4 @@
-package org.springgear.core.context.registrars;
+package org.springgear.core.context.registrar;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,8 +9,6 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springgear.EnableSpringGear;
-import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
-import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
 import org.springgear.core.context.AbstractSpringGearBeanRegistrar;
 
 import java.util.ArrayList;
@@ -38,14 +36,7 @@ public class SpringGearBeanAnnotationRegistrar extends AbstractSpringGearBeanReg
 
         List<String> basePackages = this.getBasePackages(importingClassMetadata, springGearAnno);
 
-        AbstractSpringGearProxyProcessor processor;
-        if (springGearAnno.processor() == null) {
-            processor = new DefaultBeanDefinitionProcessor();
-        } else {
-            processor = new DefaultBeanDefinitionProcessor();
-        }
-
-        this.registerBeanDefinitions(registry, basePackages, processor);
+        super.registerBeanDefinitions(registry, basePackages);
     }
 
     /**

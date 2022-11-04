@@ -1,8 +1,7 @@
-package org.springgear.core.context.registrars;
+package org.springgear.core.context.registrar;
 
 import lombok.Setter;
 import org.springframework.util.StringUtils;
-import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -37,8 +36,6 @@ public class SpringGearBeanNormalRegistrar extends AbstractSpringGearBeanRegistr
     @Setter
     private List<String> basePackages;
 
-    @Setter
-    private AbstractSpringGearProxyProcessor beanDefinitionProcessor;
 
     public SpringGearBeanNormalRegistrar() {
         this("");
@@ -62,7 +59,7 @@ public class SpringGearBeanNormalRegistrar extends AbstractSpringGearBeanRegistr
      */
     @Override
     public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
-        super.registerBeanDefinitions(registry, this.basePackages, this.beanDefinitionProcessor);
+        super.registerBeanDefinitions(registry, this.basePackages);
     }
 
     @Override
