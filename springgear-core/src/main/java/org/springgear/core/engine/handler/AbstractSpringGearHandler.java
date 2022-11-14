@@ -1,6 +1,5 @@
 package org.springgear.core.engine.handler;
 
-import org.springgear.core.engine.SpringGearEngineHandler;
 import org.springgear.exception.SpringGearInterruptException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;

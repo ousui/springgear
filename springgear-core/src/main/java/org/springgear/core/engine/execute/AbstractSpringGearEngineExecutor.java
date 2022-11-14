@@ -1,23 +1,20 @@
 package org.springgear.core.engine.execute;
 
-import org.springgear.core.engine.SpringGearEngineHandler;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.FactoryBean;
+import org.springgear.core.engine.handler.SpringGearEngineHandler;
 import org.springgear.core.engine.context.EmptyRequest;
 import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.core.engine.context.SpringGearResultOriginalWrapper;
 import org.springgear.core.engine.context.SpringGearResultWrapper;
-import org.springgear.exception.SpringGearContinueException;
-import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;
-import org.springgear.support.constants.HttpStatus;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.util.CollectionUtils;
 
-import java.net.SocketTimeoutException;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * spring gear 的抽象实现
@@ -39,11 +36,6 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
 
     @Setter
     private SpringGearResultWrapper wrapper;
-
-    /**
-     * eventbus
-     */
-//    private AsyncEventBus eventBus = null;
 
     @Override
     public void afterPropertiesSet() throws Exception {
@@ -76,53 +68,56 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
         }
 
         String source = this.getSource();
-//        SpringGearContext context = this.newContextInstance(request, timestamp, others);
         SpringGearContext context = new SpringGearContext(request, source, timestamp, others);
 
         if (log.isDebugEnabled()) { // 入参记录，方便问题跟踪，只记录一次就好。
             log.debug("TS[{}-{}] Handler '{}' start work. request is: {}", source, timestamp, beanName, request);
         }
 
-        /**
-         * 核心 handlers 循环处理
-         */
-        for (SpringGearEngineHandler<?, ?> handler : handlers) {
-
-            if (!handler.supports(context)) { // 如果不支持，则 continue。
-                continue;
-            }
-
-            // event 获取
-//            SpringGearEvent sge = handler.getClass().getAnnotation(SpringGearEvent.class);
-            Throwable ex = null;
-            try {
-                handler.handle(context);
-            } catch (Throwable e) { // 捕获并处理异常
-                ex = e;
-                this.handleThrowable(context, e);
-            } finally {
-                long duration = System.currentTimeMillis() - timestamp;
-
-                if (log.isDebugEnabled()) {
-                    log.debug("TS[{}-{}] Handler '{}#{}' finished work. duration {} ms. context is: {}",
-                            source, timestamp, handler.getClass().getSimpleName(), null, duration, context);
-//                            source, timestamp, handler.getClass().getSimpleName(), handler.getOrder(), duration, context);
-                }
-
-
-            }
-
+        // 核心 handlers 循环处理
+        for (int i = 0; i < handlers.size(); i++) {
+            this.handleForEach(timestamp, source, context, handlers.get(i), i + 1);
         }
-
-        long duration = System.currentTimeMillis() - timestamp;
 
         // 记录一次 context，方便线上问题排查
         if (log.isInfoEnabled()) {
-            log.info("TS[{}-{}] Handler '{}' finished work. duration {} ms. context is: {}", source, timestamp, beanName, duration, context);
+            log.info("TS[{}-{}] Handler '{}' finished work. duration {} ms. context is: {}", source, timestamp, beanName, (System.currentTimeMillis() - timestamp), context);
         }
 
         final Object response = context.getResponse();
         return response;
+    }
+
+    /**
+     * 循环处理 handler
+     *
+     * @param timestamp
+     * @param source
+     * @param context
+     * @param handler
+     * @throws SpringGearException
+     */
+    private void handleForEach(long timestamp, String source, SpringGearContext context, SpringGearEngineHandler<?, ?> handler, int index) throws SpringGearException {
+        String classSimpleName = handler.getClass().getSimpleName();
+
+        // 如果不支持，则 continue。
+        if (!handler.supports(context)) {
+            if (log.isDebugEnabled()) {
+                log.debug("TS[{}-{}] Handler '{}#{}' don't support.", source, timestamp, classSimpleName, index);
+            }
+            return;
+        }
+
+        try {
+            handler.handle(context);
+        } catch (Throwable e) { // 捕获并处理异常
+            this.onThrowable(context, e);
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("TS[{}-{}] Handler '{}#{}' finished work. duration {} ms. context is: {}",
+                        source, timestamp, classSimpleName, index, (System.currentTimeMillis() - timestamp), context);
+            }
+        }
     }
 
     @Override
@@ -131,77 +126,7 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
         if (log.isDebugEnabled()) {
             log.debug("start wrap parameters, req: `{}`, resp: `{}`, timestamp: `{}`, code: `{}`, msg: `{}`", req, resp, timestamp, code, msg);
         }
-
         return wrapper.process(req, resp, timestamp, code, msg, others);
     }
-
-    /**
-     * 针对各种异常的处理。
-     * TODO 将异常及对应的 code 做成 mapping 形式，进行自动化。
-     *
-     * @param context
-     * @param e
-     * @throws SpringGearException
-     */
-    private void handleThrowable(SpringGearContext<?, ?> context, Throwable e) throws SpringGearException {
-        String source = context.getSource();
-        long timestamp = context.getTimestamp();
-        Object response = context.getResponse();
-        // 打印堆栈
-        String localizedMessage = e.getLocalizedMessage();
-
-        // TODO
-        String logMessage = String.format("TS[%s-%s] %s：%s | %s | STACK TRACE: ",
-                source, timestamp, e.getClass().getSimpleName(), localizedMessage, context);
-
-        if (!(e instanceof SpringGearException)) {
-            log.error(logMessage, e);
-            int status = HttpStatus.SC_INTERNAL_SERVER_ERROR;
-
-            if (e instanceof IllegalArgumentException) { // 参数一场，标记 status
-                status = HttpStatus.SC_BAD_REQUEST;
-                // TODO
-//            } else if (e instanceof RpcException) { // RPC 调用一场，标记 status
-//                status = HttpStatus.SC_BAD_GATEWAY;
-//                localizedMessage = "系统异常，请重试或联系客服[JSF]";
-            } else if (e instanceof NullPointerException) { // 空指针异常，给一个友好文案。
-                localizedMessage = "系统异常，请重试或联系客服[N]";
-            } else if (e instanceof SocketTimeoutException || e instanceof TimeoutException) { // 超时异常
-                localizedMessage = "系统异常，请重试或联系客服[T]";
-            } else {
-                localizedMessage = "系统异常，请重试或联系客服[Z]";
-            }
-            // 异常抛出
-            throw new SpringGearException(localizedMessage, status, timestamp);
-        }
-
-        ((SpringGearException) e).setTimestamp(timestamp);
-
-        if (e instanceof SpringGearContinueException) {// 捕获到 continue 异常，返回继续向下执行代码。
-            log.warn(logMessage);
-//            log.warn(logMessage, e);
-            return;
-        } else if (e instanceof SpringGearInterruptException) {
-            switch (((SpringGearInterruptException) e).getCode()) { // 以下几种类型不记录堆栈
-                /** @see HttpResponseStatus **/
-                case HttpStatus.SC_OK:
-                case HttpStatus.SC_UNAUTHORIZED:
-                case HttpStatus.SC_NOT_FOUND:
-                    log.error(logMessage);
-                    break;
-                default:
-                    log.error(logMessage, e);
-                    break;
-            }
-            if (response != null && ((SpringGearInterruptException) e).getResponse() == null) { // 如果是 中断异常，且 response 没有内容，尝试将 response 放入。
-                ((SpringGearInterruptException) e).setResponse(response);
-            }
-        } else {
-            log.error(logMessage, e);
-        }
-
-        throw (SpringGearException) e;
-    }
-
 
 }

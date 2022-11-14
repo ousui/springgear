@@ -2,6 +2,7 @@ package org.springgear.core.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.core.engine.handler.SpringGearEngineHandler;
 import org.springgear.core.support.SpringGearEngineUtils;
 import org.springgear.core.engine.execute.AbstractSpringGearEngineExecutor;
 import org.springgear.core.engine.execute.DefaultSpringGearEngineExecutor;

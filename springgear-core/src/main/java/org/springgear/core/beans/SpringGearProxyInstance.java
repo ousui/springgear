@@ -1,7 +1,5 @@
 package org.springgear.core.beans;
 
-import org.springgear.core.beans.interceptor.SpringGearInterceptor;
-import org.springgear.core.beans.interceptor.SpringGearInterceptorChain;
 import org.springgear.core.support.SpringGearEngineUtils;
 import org.springgear.core.engine.execute.SpringGearEngineInterface;
 import org.springgear.core.annotation.SpringGearEngine;
@@ -13,13 +11,12 @@ import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.annotation.AnnotationAwareOrderComparator;
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -32,25 +29,12 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
     private final ApplicationContext applicationContext;
 
     /**
-     * 拦截器们
-     */
-    private final List<SpringGearInterceptor> interceptors;
-
-    /**
      * bean 缓存
      */
     private Map<String, SpringGearEngineInterface> interfaceCachedMap = new ConcurrentHashMap<>();
 
     public SpringGearProxyInstance(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
-        Map<String, SpringGearInterceptor> interceptorMap = this.applicationContext.getBeansOfType(SpringGearInterceptor.class);
-        if (CollectionUtils.isEmpty(interceptorMap)) {
-            interceptors = Collections.EMPTY_LIST;
-        } else {
-            interceptors = new ArrayList<>(interceptorMap.values());
-//            interceptors = Lists.newArrayList(interceptorMap.values());
-            AnnotationAwareOrderComparator.sort(interceptors);
-        }
     }
 
     @Override
@@ -108,9 +92,6 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
 
         long timestamp = System.currentTimeMillis();
 
-
-        SpringGearInterceptorChain chain = new SpringGearInterceptorChain(interceptors);
-
         Object resp = null;
 
         int code = HttpStatus.SC_OK;
@@ -119,11 +100,9 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
         Exception ex = null;
 
         try {
-            chain.beforeExecute(beanName, request, timestamp);
 
             resp = engineBean.execute(request, timestamp, others);
 
-            chain.afterExecute(beanName, request, timestamp, null, resp);
         } catch (SpringGearException e) {
             ex = e;
             code = e.getCode();
@@ -132,11 +111,11 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
                 resp = ((SpringGearInterruptException) e).getResponse();
             }
             log.warn("There have some business exception happened, code: {}, msg: {}", code, msg);
-            chain.onException(beanName, request, timestamp, null, resp, e);
+            engineBean.onException(ex);
         } catch (Exception e) {
             ex = e;
         } finally {
-            chain.onFinally(beanName, request, timestamp, null, resp, ex);
+            engineBean.onFinally();
         }
 
         Object result = engineBean.wrap(request, resp, timestamp, code, msg, others);
