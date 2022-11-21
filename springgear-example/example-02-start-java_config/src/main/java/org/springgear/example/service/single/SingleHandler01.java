@@ -9,7 +9,7 @@ import org.springgear.core.engine.handler.AbstractSpringGearEndingHandler;
 @Component
 public class SingleHandler01 extends AbstractSpringGearEndingHandler<String, String> {
     @Override
-    public String end(SpringGearContext<String, String> context, String s, Object... others) throws Exception {
+    public String end(SpringGearContext<String, String> context, String s) throws Exception {
 
         System.out.println("this is handler 01 --------");
 

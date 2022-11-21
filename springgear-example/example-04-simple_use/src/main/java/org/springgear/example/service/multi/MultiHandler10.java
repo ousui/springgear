@@ -10,7 +10,7 @@ import org.springgear.core.engine.handler.AbstractSpringGearHandler;
 public class MultiHandler10 extends AbstractSpringGearHandler<String, String> {
 
     @Override
-    public void handle(SpringGearContext<String, String> context, Object... others) throws Exception {
+    public void handle(SpringGearContext<String, String> context) throws Exception {
         System.out.println("this is multi handler 10 --------, 01 response is: " + context.getResponse());
         context.setResponse("multi 10 I change some response");
     }

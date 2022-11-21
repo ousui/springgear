@@ -4,10 +4,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
 import org.springgear.core.engine.handler.SpringGearEngineHandler;
 import org.springgear.core.support.SpringGearEngineUtils;
-import org.springgear.core.engine.execute.AbstractSpringGearEngineExecutor;
-import org.springgear.core.engine.execute.DefaultSpringGearEngineExecutor;
+import org.springgear.core.engine.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.core.engine.execute.executors.DefaultSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
-import org.springgear.core.engine.context.SpringGearResultWrapper;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
@@ -21,7 +20,6 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import java.lang.reflect.Method;
 import java.util.*;
@@ -121,11 +119,11 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     /**
      * 构建 spring gear core
      *
-     * @param engine
+     * @param engineAnno
      * @param method
      */
-    private void buildSpringGearEngine(SpringGearEngine engine, Method method) {
-        String beanName = SpringGearEngineUtils.getInterfaceBeanName(engine, method);
+    private void buildSpringGearEngine(SpringGearEngine engineAnno, Method method) {
+        String beanName = SpringGearEngineUtils.getInterfaceBeanName(engineAnno, method);
 
         // 如果这个 bean 已经注册
         if (this.applicationContext.containsBean(beanName)) {
@@ -134,25 +132,10 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         }
 
         // 生成 bean definition，将 handler 注入，形成工作工作流
-        final Qualifier[] handlers = engine.handlers();
-        String wrapperName = engine.wrapper().value();
-
-        if (false == StringUtils.hasText(wrapperName)) {
-            wrapperName = SpringGearResultWrapper.DEFAULT_BEAN_NAME;
-        }
-
-        // 获取所有 wrapper 类
-        Map<String, SpringGearResultWrapper> wrappers = this.applicationContext.getBeansOfType(SpringGearResultWrapper.class);
-
-        SpringGearResultWrapper wrapper = null;
-        if (false == CollectionUtils.isEmpty(wrappers)) {
-            wrapper = wrappers.get(wrapperName);
-        }
+        final Qualifier[] handlers = engineAnno.handlers();
 
         BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(springGearEngineExecutorClass)
                 .addPropertyValue("handlers", this.getBeanList(handlers, this.handlers, true))
-//                .addPropertyValue("listeners", this.getBeanList(handlers, this.listeners, false))
-                .addPropertyValue("wrapper", wrapper)
                 .setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME)
                 .getBeanDefinition();
 

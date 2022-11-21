@@ -1,6 +1,7 @@
 package org.springgear.core.engine.handler;
 
 import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.exception.SpringGearExceptions;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.support.constants.HttpStatus;
 
@@ -11,14 +12,14 @@ import org.springgear.support.constants.HttpStatus;
  **/
 public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearOrderedHandler<REQ, RESP> {
 
-    public abstract void verify(REQ request, Object... others) throws IllegalArgumentException;
+    public abstract void verify(REQ request) throws IllegalArgumentException;
 
     @Override
-    public void handle(SpringGearContext<REQ, RESP> context, Object... others) throws SpringGearInterruptException {
+    public void handle(SpringGearContext<REQ, RESP> context) throws SpringGearInterruptException {
         try {
-            this.verify(context.getRequest(), others);
+            this.verify(context.getRequest());
         } catch (IllegalArgumentException e) {
-            this.throwInterruptException(HttpStatus.SC_BAD_REQUEST, "参数验证错误：{}。", e.getLocalizedMessage());
+            SpringGearExceptions.throwInterruptException(HttpStatus.SC_BAD_REQUEST, "参数验证错误：{}。", e.getLocalizedMessage());
         }
     }
 

@@ -1,5 +1,6 @@
 package org.springgear.core.engine.handler;
 
+import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearInterruptException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
@@ -11,6 +12,17 @@ import org.slf4j.helpers.MessageFormatter;
  **/
 @Slf4j
 public abstract class AbstractSpringGearHandler<REQ, RESP> implements SpringGearEngineHandler<REQ, RESP> {
+
+    /**
+     * 迅速抛出一个继续操作异常
+     *
+     * @param msg
+     * @param args
+     * @throws SpringGearInterruptException
+     */
+    protected void throwContinueException(String msg, Object... args) throws SpringGearContinueException {
+        throw new SpringGearContinueException(MessageFormatter.arrayFormat(msg, args).getMessage());
+    }
 
     /**
      * 迅速抛出一个中断异常

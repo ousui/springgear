@@ -14,15 +14,14 @@ public abstract class AbstractSpringGearEndingHandler<REQ, RESP> extends Abstrac
      *
      * @param context 上下文
      * @param req     请求
-     * @param others  其他参数
      * @return 想要返回的 response
      * @throws Exception
      */
-    public abstract RESP end(SpringGearContext<REQ, RESP> context, REQ req, Object... others) throws Exception;
+    public abstract RESP end(SpringGearContext<REQ, RESP> context, REQ req) throws Exception;
 
     @Override
-    public void handle(SpringGearContext<REQ, RESP> context, Object... others) throws Exception {
-        RESP resp = this.end(context, context.getRequest(), others);
+    public void handle(SpringGearContext<REQ, RESP> context) throws Exception {
+        RESP resp = this.end(context, context.getRequest());
         context.setResponse(resp);
     }
 

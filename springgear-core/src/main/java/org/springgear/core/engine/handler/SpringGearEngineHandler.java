@@ -14,7 +14,7 @@ public interface SpringGearEngineHandler<REQ, RESP> {
      *
      * @return t/f
      */
-    default boolean supports(SpringGearContext<REQ, RESP> context, Object... others) {
+    default boolean supports(SpringGearContext<REQ, RESP> context) {
         return true;
     };
 
@@ -24,7 +24,7 @@ public interface SpringGearEngineHandler<REQ, RESP> {
      * @param context 上下文
      * @throws Exception 异常
      */
-    void handle(SpringGearContext<REQ, RESP> context, Object... others) throws Exception;
+    void handle(SpringGearContext<REQ, RESP> context) throws Exception;
 
 
 }

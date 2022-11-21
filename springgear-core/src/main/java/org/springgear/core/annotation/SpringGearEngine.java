@@ -1,6 +1,6 @@
 package org.springgear.core.annotation;
 
-import org.springgear.core.engine.context.SpringGearResultWrapper;
+import org.springgear.core.engine.execute.SpringGearResultProcessor;
 import org.springframework.beans.factory.annotation.Qualifier;
 
 import java.lang.annotation.Documented;
@@ -28,6 +28,13 @@ public @interface SpringGearEngine {
     String name() default "";
 
     /**
+     * 标记本流程处理的来源，如果未 empty，使用默认处理
+     *
+     * @return
+     */
+    String source() default "";
+
+    /**
      * handler 组，支持多重定义。
      *
      * @return Qualifier
@@ -39,6 +46,6 @@ public @interface SpringGearEngine {
      *
      * @return
      */
-    Qualifier wrapper() default @Qualifier(SpringGearResultWrapper.DEFAULT_BEAN_NAME);
+    Qualifier wrapper() default @Qualifier(SpringGearResultProcessor.DEFAULT_BEAN_NAME);
 
 }

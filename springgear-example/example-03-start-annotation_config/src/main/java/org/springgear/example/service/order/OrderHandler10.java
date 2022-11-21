@@ -12,7 +12,7 @@ import org.springgear.core.engine.handler.AbstractSpringGearHandler;
 public class OrderHandler10 extends AbstractSpringGearHandler<String, String> {
 
     @Override
-    public void handle(SpringGearContext<String, String> context, Object... others) throws Exception {
+    public void handle(SpringGearContext<String, String> context) throws Exception {
         System.out.println("this is ORDER handler 10 --------, pre response is: " + context.getResponse());
         context.setResponse("ORDER 10 I change some response");
     }

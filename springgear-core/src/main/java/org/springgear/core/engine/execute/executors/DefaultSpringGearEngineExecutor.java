@@ -1,4 +1,4 @@
-package org.springgear.core.engine.execute;
+package org.springgear.core.engine.execute.executors;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springgear.core.engine.context.SpringGearContext;
@@ -19,8 +19,6 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class DefaultSpringGearEngineExecutor extends AbstractSpringGearEngineExecutor {
 
-    private final static String SOURCE = "_spring_gear_default_";
-
     /**
      * 针对各种异常的处理。
      * TODO 将异常及对应的 code 做成 mapping 形式，进行自动化。
@@ -31,7 +29,7 @@ public class DefaultSpringGearEngineExecutor extends AbstractSpringGearEngineExe
      */
 
     @Override
-    public void onThrowable(SpringGearContext context, Throwable e) throws SpringGearException {
+    protected void onThrowable(SpringGearContext context, Throwable e) throws SpringGearException {
         String source = context.getSource();
         long timestamp = context.getTimestamp();
         Object response = context.getResponse();
@@ -85,12 +83,5 @@ public class DefaultSpringGearEngineExecutor extends AbstractSpringGearEngineExe
 
         throw (SpringGearException) e;
     }
-
-
-    @Override
-    public String getSource() {
-        return SOURCE;
-    }
-
 
 }
