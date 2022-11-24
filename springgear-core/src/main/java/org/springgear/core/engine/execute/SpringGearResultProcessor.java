@@ -20,6 +20,6 @@ public interface SpringGearResultProcessor<R> {
      *
      * @return
      */
-    R process(Object resp, SpringGearExecuteEntity entity);
+    R process(Object resp, SpringGearEngineParts entity);
 
 }

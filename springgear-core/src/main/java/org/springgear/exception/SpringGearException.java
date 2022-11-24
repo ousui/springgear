@@ -9,27 +9,19 @@ import lombok.Setter;
  * @author SHUAI.W
  * @since 2020/12/11
  **/
-@AllArgsConstructor
-public class SpringGearException extends Exception {
+public class SpringGearException extends SpringGearError {
 
     @Getter
-    private final int code;
+    private final Object code;
 
-    @Getter
-    @Setter
-    private long timestamp;
 
     public SpringGearException(String msg) {
         this(msg, HttpStatus.SC_INTERNAL_SERVER_ERROR);
     }
 
-    public SpringGearException(String msg, int code) {
-        this(msg, code, System.currentTimeMillis());
-    }
-
-    public SpringGearException(String msg, int code, long timestamp) {
+    public SpringGearException(String msg, Object code) {
         super(msg);
         this.code = code;
-        this.timestamp = timestamp;
     }
+
 }

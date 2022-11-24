@@ -1,5 +1,6 @@
 package org.springgear.core.annotation;
 
+import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.core.engine.execute.SpringGearResultProcessor;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -47,5 +48,7 @@ public @interface SpringGearEngine {
      * @return
      */
     Qualifier wrapper() default @Qualifier(SpringGearResultProcessor.DEFAULT_BEAN_NAME);
+
+    Class<? extends SpringGearContext> ctx() default SpringGearContext.class;
 
 }

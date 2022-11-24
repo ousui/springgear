@@ -9,11 +9,13 @@ import org.springgear.core.engine.handler.AbstractSpringGearHandler;
 @Component
 public class MultiHandler01 extends AbstractSpringGearHandler<String, String> {
 
+
     @Override
     public void handle(SpringGearContext<String, String> context) throws Exception {
         context.setParameter("p1", "some params");
         System.out.println("this is multi handler 01 --------");
         context.setResponse("multi 01 I do some good things.");
     }
+
 
 }

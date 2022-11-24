@@ -1,19 +1,21 @@
 package org.springgear.core.engine.execute.executors;
 
-import org.springframework.util.ObjectUtils;
-import org.springgear.core.engine.execute.SpringGearExecuteEntity;
-import org.springgear.core.engine.execute.SpringGearEngineExecutor;
-import org.springgear.core.engine.handler.SpringGearEngineHandler;
-import org.springgear.core.engine.context.SpringGearContext;
-import org.springgear.exception.SpringGearContinueException;
-import org.springgear.exception.SpringGearException;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
+import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.core.engine.execute.SpringGearEngineExecutor;
+import org.springgear.core.engine.execute.SpringGearEngineParts;
+import org.springgear.core.engine.handler.SpringGearEngineHandler;
+import org.springgear.exception.SpringGearContinueException;
+import org.springgear.exception.SpringGearError;
+import org.springgear.exception.SpringGearException;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.support.constants.HttpStatus;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -24,7 +26,7 @@ import java.util.List;
  * @see org.springgear.core.annotation.SpringGearEngine
  **/
 @Slf4j
-public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngineExecutor, BeanNameAware {
+public abstract class AbstractSpringGearEngineExecutor<RESP, CTX extends SpringGearContext<?, RESP>> implements SpringGearEngineExecutor<RESP>, BeanNameAware {
 
     @Setter
     private String beanName;
@@ -33,10 +35,13 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
      * 使用的 handlers
      */
     @Setter
-    private List<SpringGearEngineHandler<?, ?>> handlers;
+    private List<SpringGearEngineHandler<CTX>> handlers;
+
+    @Setter
+    private Class<CTX> contextClass;
 
     @Override
-    public Object execute(SpringGearExecuteEntity entity) throws SpringGearException {
+    public RESP execute(SpringGearEngineParts parts) throws SpringGearError {
         if (log.isDebugEnabled()) {
             log.debug("Springgear core for bean `{}` start execute main process with handlers: {}", this.beanName, this.handlers);
         }
@@ -46,14 +51,20 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
         }
 
         Object request = null;
-        Object[] args = entity.getArgs();
-        long timestamp = entity.getTimestamp();
-        String source = entity.getSource();
+        Object[] args = parts.getArgs();
+        long timestamp = parts.getTimestamp();
+        String source = parts.getSource();
 
         if (false == ObjectUtils.isEmpty(args)) {
             request = args[0];
         }
-        SpringGearContext context = new SpringGearContext(request, source, timestamp, args);
+
+        CTX context;
+        try {
+            context = contextClass.getDeclaredConstructor(SpringGearEngineParts.class).newInstance(parts);
+        } catch (Exception e) {
+            throw new SpringGearError(e);
+        }
 
         if (log.isDebugEnabled()) { // 入参记录，方便问题跟踪，只记录一次就好。
             log.debug("TS[{}-{}] Handler '{}' start work. request is: {}", source, timestamp, beanName, request);
@@ -88,7 +99,7 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
             log.info("TS[{}-{}] Handler '{}' finished work. duration {} ms. context is: {}", source, timestamp, beanName, (System.currentTimeMillis() - timestamp), context);
         }
 
-        final Object response = context.getResponse();
+        final RESP response = context.getResponse();
         return response;
     }
 
@@ -100,13 +111,13 @@ public abstract class AbstractSpringGearEngineExecutor implements SpringGearEngi
      * @param e
      * @throws SpringGearException
      */
-    protected void onThrowable(SpringGearContext<?, ?> context, Throwable e) throws SpringGearException {
+    protected void onThrowable(CTX context, Throwable e) throws SpringGearException {
         // 捕获到 continue 异常，返回继续向下执行代码。
         if (e instanceof SpringGearContinueException) {
         } else if (e instanceof SpringGearInterruptException) {
             throw (SpringGearInterruptException) e;
         } else {
-            throw new SpringGearException(e.getLocalizedMessage(), HttpStatus.SC_INTERNAL_SERVER_ERROR, System.currentTimeMillis());
+            throw new SpringGearException(e.getLocalizedMessage());
         }
     }
 

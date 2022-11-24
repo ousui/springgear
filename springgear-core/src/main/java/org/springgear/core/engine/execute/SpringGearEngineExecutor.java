@@ -1,6 +1,6 @@
 package org.springgear.core.engine.execute;
 
-import org.springgear.exception.SpringGearException;
+import org.springgear.exception.SpringGearError;
 
 /**
  * 接口 工作流，继承于 pipeline, 有自己独特的实现。
@@ -13,9 +13,9 @@ public interface SpringGearEngineExecutor<RESP> {
     /**
      * 简化方式，只传递 request 即可。
      *
-     * @param entity 入参
+     * @param parts 入参
      * @return 返回出参
      */
-    RESP execute(SpringGearExecuteEntity entity) throws SpringGearException;
+    RESP execute(SpringGearEngineParts parts) throws SpringGearError;
 
 }

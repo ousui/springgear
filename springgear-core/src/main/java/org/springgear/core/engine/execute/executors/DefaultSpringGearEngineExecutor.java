@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  * @since 2020/12/13
  **/
 @Slf4j
-public class DefaultSpringGearEngineExecutor extends AbstractSpringGearEngineExecutor {
+public class DefaultSpringGearEngineExecutor<RESP> extends AbstractSpringGearEngineExecutor<RESP, SpringGearContext<?, RESP>> {
 
     /**
      * 针对各种异常的处理。
@@ -27,9 +27,9 @@ public class DefaultSpringGearEngineExecutor extends AbstractSpringGearEngineExe
      * @param e
      * @throws SpringGearException
      */
-
     @Override
     protected void onThrowable(SpringGearContext context, Throwable e) throws SpringGearException {
+
         String source = context.getSource();
         long timestamp = context.getTimestamp();
         Object response = context.getResponse();
@@ -54,16 +54,15 @@ public class DefaultSpringGearEngineExecutor extends AbstractSpringGearEngineExe
                 localizedMessage = "System Exception, " + localizedMessage;
             }
             // 异常抛出
-            throw new SpringGearException(localizedMessage, status, timestamp);
+            throw new SpringGearException(localizedMessage, status);
         }
-
-        ((SpringGearException) e).setTimestamp(timestamp);
 
         if (e instanceof SpringGearContinueException) {// 捕获到 continue 异常，返回继续向下执行代码。
             log.warn(logMessage);
             return;
         } else if (e instanceof SpringGearInterruptException) {
-            switch (((SpringGearInterruptException) e).getCode()) { // 以下几种类型不记录堆栈
+            int code = (int) ((SpringGearInterruptException) e).getCode();
+            switch (code) { // 以下几种类型不记录堆栈
                 /** @see HttpResponseStatus **/
                 case HttpStatus.SC_OK:
                 case HttpStatus.SC_UNAUTHORIZED:

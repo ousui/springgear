@@ -1,7 +1,7 @@
 package org.springgear.core.engine.execute.results;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springgear.core.engine.execute.SpringGearExecuteEntity;
+import org.springgear.core.engine.execute.SpringGearEngineParts;
 import org.springgear.core.engine.execute.SpringGearResultProcessor;
 
 /**
@@ -13,7 +13,7 @@ import org.springgear.core.engine.execute.SpringGearResultProcessor;
 @Slf4j
 public class SpringGearOriginalResultProcessor<R> implements SpringGearResultProcessor<Object> {
     @Override
-    public Object process(Object resp, SpringGearExecuteEntity entity) {
+    public Object process(Object resp, SpringGearEngineParts entity) {
         return resp;
     }
 }

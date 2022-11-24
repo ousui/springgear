@@ -4,10 +4,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springgear.core.engine.execute.results.SpringGearOriginalResultProcessor;
 import org.springgear.core.engine.execute.SpringGearResultProcessor;
-import org.springgear.core.engine.execute.SpringGearExecuteEntity;
+import org.springgear.core.engine.execute.SpringGearEngineParts;
 import org.springgear.core.support.SpringGearEngineUtils;
 import org.springgear.core.engine.execute.SpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
+import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
     /**
      * bean 缓存
      */
-    private Map<String, SpringGearEngineExecutor> interfaceCachedMap = new ConcurrentHashMap<>();
+    private final Map<String, SpringGearEngineExecutor<?>> interfaceCachedMap = new ConcurrentHashMap<>();
 
     public SpringGearProxyInstance(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
@@ -47,10 +48,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
             return method.invoke(this, args);
         }
 
-        // 记录日志。
-        /**
-         * 获取代理方法的注解。
-         */
+        // 获取代理方法的注解
         SpringGearEngine engineAnno = method.getAnnotation(SpringGearEngine.class);
         // 没有注解抛出异常，也可以考虑做一个默认的实现。
         if (null == engineAnno) {
@@ -63,38 +61,37 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
 
         // 获取指定的 core name
         String beanName = SpringGearEngineUtils.getInterfaceBeanName(engineAnno, method);
-        SpringGearEngineExecutor engine = this.getEngineBean(beanName);
+        // 单例
+        SpringGearEngineExecutor<?> engine = this.getEngineBean(beanName);
 
         log.debug("Engine bean is {}", engine.getClass());
 
         Object resp = null;
         Exception ex = null;
-        long timestamp = System.currentTimeMillis();
 
-        String source = engineAnno.source();
-        if (false == StringUtils.hasText(source)) {
-            source = "_spring_gear_default_";
-        }
-        SpringGearExecuteEntity entity = new SpringGearExecuteEntity(args, source, timestamp);
+        SpringGearEngineParts parts = new SpringGearEngineParts(args, beanName, engineAnno);
 
         try {
-            resp = engine.execute(entity);
+            resp = engine.execute(parts);
         } catch (SpringGearException e) {
-            ex = e;
             if (e instanceof SpringGearInterruptException) {
                 resp = ((SpringGearInterruptException) e).getResponse();
             }
-            entity.setException(e);
+            parts.setException(e);
+        } catch (SpringGearError e) {
+            log.error("Spring Gear Engine execute happened some error must fixed: ", e);
+            resp = e.getLocalizedMessage();
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Spring Gear Engine execute happened some unexpected exception: ", e);
+            resp = e;
         } finally {
 
         }
 
-        SpringGearResultProcessor wrapper = this.getOutputWrapper(engineAnno.wrapper().value());
+        SpringGearResultProcessor<?> wrapper = this.getOutputWrapper(engineAnno.wrapper().value());
 
-        log.debug("[{}] '{}' process context: {}", timestamp, beanName, entity);
-        return wrapper.process(resp, entity);
+        log.debug("[{}] '{}' process context: {}", parts.getTimestamp(), beanName, parts);
+        return wrapper.process(resp, parts);
     }
 
     /**
@@ -103,21 +100,21 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
      * @param beanName
      * @return
      */
-    private SpringGearResultProcessor getOutputWrapper(String beanName) {
+    private SpringGearResultProcessor<?> getOutputWrapper(String beanName) {
         if (false == StringUtils.hasText(beanName)) {
             beanName = SpringGearResultProcessor.DEFAULT_BEAN_NAME;
         }
         // 获取所有 wrapper 类
         Map<String, SpringGearResultProcessor> wrappers = this.applicationContext.getBeansOfType(SpringGearResultProcessor.class);
 
-        SpringGearResultProcessor wrapper = null;
+        SpringGearResultProcessor<?> wrapper = null;
         if (false == CollectionUtils.isEmpty(wrappers)) {
             wrapper = wrappers.get(beanName);
         }
         if (wrapper != null) {
             return wrapper;
         }
-        return new SpringGearOriginalResultProcessor();
+        return new SpringGearOriginalResultProcessor<>();
     }
 
     /**
@@ -126,8 +123,8 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
      * @param engineBeanName
      * @return
      */
-    private SpringGearEngineExecutor getEngineBean(String engineBeanName) {
-        SpringGearEngineExecutor face = interfaceCachedMap.get(engineBeanName);
+    private SpringGearEngineExecutor<?> getEngineBean(String engineBeanName) {
+        SpringGearEngineExecutor<?> face = interfaceCachedMap.get(engineBeanName);
         if (face != null) {
             return face;
         }
@@ -143,7 +140,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
             throw new TypeMismatchException(bean, SpringGearEngineExecutor.class);
         }
 
-        face = (SpringGearEngineExecutor) bean;
+        face = (SpringGearEngineExecutor<?>) bean;
 
         // 将 bean 缓存，提高性能。
         interfaceCachedMap.put(engineBeanName, face);

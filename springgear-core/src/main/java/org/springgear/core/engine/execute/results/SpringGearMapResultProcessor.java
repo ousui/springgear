@@ -1,6 +1,6 @@
 package org.springgear.core.engine.execute.results;
 
-import org.springgear.core.engine.execute.SpringGearExecuteEntity;
+import org.springgear.core.engine.execute.SpringGearEngineParts;
 import org.springgear.core.engine.execute.SpringGearResultProcessor;
 
 import java.util.HashMap;
@@ -15,7 +15,7 @@ import java.util.Map;
 public class SpringGearMapResultProcessor implements SpringGearResultProcessor<Map<String, Object>> {
 
     @Override
-    public Map<String, Object> process(Object resp, SpringGearExecuteEntity entity) {
+    public Map<String, Object> process(Object resp, SpringGearEngineParts entity) {
         Map<String, Object> output = new HashMap<>();
 
         output.put("ts", entity.getTimestamp());

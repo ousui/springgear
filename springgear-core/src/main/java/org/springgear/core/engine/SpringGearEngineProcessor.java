@@ -53,7 +53,6 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
 
     /**
      * 构造方法
-     *
      */
     public SpringGearEngineProcessor() {
         this(DefaultSpringGearEngineExecutor.class);
@@ -135,7 +134,10 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         final Qualifier[] handlers = engineAnno.handlers();
 
         BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(springGearEngineExecutorClass)
+                // handler
                 .addPropertyValue("handlers", this.getBeanList(handlers, this.handlers, true))
+                // context class
+                .addPropertyValue("contextClass", engineAnno.ctx())
                 .setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME)
                 .getBeanDefinition();
 

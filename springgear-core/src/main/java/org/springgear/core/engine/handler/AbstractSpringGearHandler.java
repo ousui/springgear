@@ -1,9 +1,10 @@
 package org.springgear.core.engine.handler;
 
-import org.springgear.exception.SpringGearContinueException;
-import org.springgear.exception.SpringGearInterruptException;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.helpers.MessageFormatter;
+import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.exception.SpringGearContinueException;
+import org.springgear.exception.SpringGearInterruptException;
 
 /**
  * handler 的抽象实现。
@@ -11,7 +12,8 @@ import org.slf4j.helpers.MessageFormatter;
  * @author SHUAI.W 2018-01-10
  **/
 @Slf4j
-public abstract class AbstractSpringGearHandler<REQ, RESP> implements SpringGearEngineHandler<REQ, RESP> {
+public abstract class AbstractSpringGearHandler<REQ, RESP> implements SpringGearEngineHandler<SpringGearContext<REQ, RESP>> {
+
 
     /**
      * 迅速抛出一个继续操作异常
