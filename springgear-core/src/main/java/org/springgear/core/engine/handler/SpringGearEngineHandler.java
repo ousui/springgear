@@ -7,7 +7,7 @@ import org.springgear.core.engine.context.SpringGearContext;
  *
  * @author SHUAI.W 2018-01-10
  **/
-public interface SpringGearEngineHandler<T extends SpringGearContext> {
+public interface SpringGearEngineHandler<T extends SpringGearContext<?, ?>> {
 
     /**
      * 是否支持本 handler 处理。
@@ -18,7 +18,6 @@ public interface SpringGearEngineHandler<T extends SpringGearContext> {
         return true;
     }
 
-    ;
 
     /**
      * 处理程序

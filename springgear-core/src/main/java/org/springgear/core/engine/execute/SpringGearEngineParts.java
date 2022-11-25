@@ -20,7 +20,6 @@ import java.util.Objects;
 public class SpringGearEngineParts {
 
     private final static String SOURCE = "_spring_gear_default_";
-    private final static String DEFAULT_MSG = "ok";
 
     @Getter
     private final String source;
@@ -28,25 +27,12 @@ public class SpringGearEngineParts {
     private final Object[] args;
     @Getter
     private final long timestamp;
-    @Getter
-    @Setter
-    private SpringGearError exception;
+
 
     public SpringGearEngineParts(Object[] args, String beanName, SpringGearEngine engineAnno) {
         this.args = args;
         this.timestamp = System.currentTimeMillis();
         this.source = Objects.toString(engineAnno.source(), SOURCE);
-    }
-
-    /**
-     * @return
-     */
-    public String getMsg() {
-        if (exception == null) {
-            return DEFAULT_MSG;
-        } else {
-            return exception.getLocalizedMessage();
-        }
     }
 
 }

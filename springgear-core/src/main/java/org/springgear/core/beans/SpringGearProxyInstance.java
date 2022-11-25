@@ -2,8 +2,8 @@ package org.springgear.core.beans;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springgear.core.engine.execute.results.SpringGearOriginalResultProcessor;
-import org.springgear.core.engine.execute.SpringGearResultProcessor;
+import org.springgear.core.engine.execute.results.SpringGearOriginalResultWrapper;
+import org.springgear.core.engine.execute.SpringGearResultWrapper;
 import org.springgear.core.engine.execute.SpringGearEngineParts;
 import org.springgear.core.support.SpringGearEngineUtils;
 import org.springgear.core.engine.execute.SpringGearEngineExecutor;
@@ -67,31 +67,31 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
         log.debug("Engine bean is {}", engine.getClass());
 
         Object resp = null;
-        Exception ex = null;
+        SpringGearError ex = null;
 
         SpringGearEngineParts parts = new SpringGearEngineParts(args, beanName, engineAnno);
 
         try {
             resp = engine.execute(parts);
         } catch (SpringGearException e) {
+            ex = e;
             if (e instanceof SpringGearInterruptException) {
                 resp = ((SpringGearInterruptException) e).getResponse();
             }
-            parts.setException(e);
         } catch (SpringGearError e) {
+            ex = e;
             log.error("Spring Gear Engine execute happened some error must fixed: ", e);
             resp = e.getLocalizedMessage();
         } catch (Exception e) {
-            log.error("Spring Gear Engine execute happened some unexpected exception: ", e);
-            resp = e;
+            throw e;
         } finally {
 
         }
 
-        SpringGearResultProcessor<?> wrapper = this.getOutputWrapper(engineAnno.wrapper().value());
+        SpringGearResultWrapper<?> wrapper = this.getResultWrapper(engineAnno.wrapper().value());
 
         log.debug("[{}] '{}' process context: {}", parts.getTimestamp(), beanName, parts);
-        return wrapper.process(resp, parts);
+        return wrapper.process(resp, ex, parts);
     }
 
     /**
@@ -100,21 +100,21 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
      * @param beanName
      * @return
      */
-    private SpringGearResultProcessor<?> getOutputWrapper(String beanName) {
+    private SpringGearResultWrapper<?> getResultWrapper(String beanName) {
         if (false == StringUtils.hasText(beanName)) {
-            beanName = SpringGearResultProcessor.DEFAULT_BEAN_NAME;
+            beanName = SpringGearResultWrapper.DEFAULT_BEAN_NAME;
         }
         // 获取所有 wrapper 类
-        Map<String, SpringGearResultProcessor> wrappers = this.applicationContext.getBeansOfType(SpringGearResultProcessor.class);
+        Map<String, SpringGearResultWrapper> wrappers = this.applicationContext.getBeansOfType(SpringGearResultWrapper.class);
 
-        SpringGearResultProcessor<?> wrapper = null;
+        SpringGearResultWrapper<?> wrapper = null;
         if (false == CollectionUtils.isEmpty(wrappers)) {
             wrapper = wrappers.get(beanName);
         }
         if (wrapper != null) {
             return wrapper;
         }
-        return new SpringGearOriginalResultProcessor<>();
+        return new SpringGearOriginalResultWrapper<>();
     }
 
     /**
