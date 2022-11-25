@@ -2,18 +2,17 @@ package org.springgear;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
-import org.springgear.core.beans.AbstractSpringGearProxyProcessor;
-import org.springgear.core.beans.DefaultBeanDefinitionProcessor;
-import org.springgear.core.register.SpringGearBeanRegistrarAnnotation;
-import org.springgear.core.execute.AbstractSpringGearEngineExecutor;
-import org.springgear.core.execute.DefaultSpringGearEngineExecutor;
+import org.springgear.core.context.registrar.SpringGearBeanAnnotationRegistrar;
+import org.springgear.core.engine.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.core.engine.execute.executors.DefaultSpringGearEngineExecutor;
 
 import java.lang.annotation.*;
+
 
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import({SpringGearConfiguration.class, SpringGearBeanRegistrarAnnotation.class})
+@Import({SpringGearConfiguration.class, SpringGearBeanAnnotationRegistrar.class})
 public @interface EnableSpringGear {
 
     /**
@@ -32,13 +31,6 @@ public @interface EnableSpringGear {
      */
     @AliasFor("value")
     String[] basePackages() default {};
-
-    /**
-     * 代理处理器
-     *
-     * @return
-     */
-    Class<? extends AbstractSpringGearProxyProcessor> processor() default DefaultBeanDefinitionProcessor.class;
 
     /**
      * 执行过程处理器

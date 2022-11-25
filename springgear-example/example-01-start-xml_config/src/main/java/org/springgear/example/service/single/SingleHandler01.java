@@ -2,14 +2,14 @@ package org.springgear.example.service.single;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springgear.core.context.SpringGearContext;
-import org.springgear.core.handler.AbstractSpringGearEndingHandler;
+import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.core.engine.handler.AbstractSpringGearEndingHandler;
 
 @Qualifier("single")
 @Component
 public class SingleHandler01 extends AbstractSpringGearEndingHandler<String, String> {
     @Override
-    public String end(SpringGearContext<String, String> context, String s, Object... others) throws Exception {
+    public String end(SpringGearContext<String, String> context, String s) throws Exception {
 
         System.out.println("this is handler 01 --------");
 

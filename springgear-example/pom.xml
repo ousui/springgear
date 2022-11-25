@@ -13,6 +13,7 @@
         <module>example-02-start-java_config</module>
         <module>example-03-start-annotation_config</module>
         <module>example-04-simple_use</module>
+        <module>example-05-context_use</module>
     </modules>
 
     <packaging>pom</packaging>

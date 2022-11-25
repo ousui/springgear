@@ -1,6 +1,6 @@
 package org.springgear.eventbus;
 
-import org.springgear.core.context.SpringGearContext;
+import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.eventbus.annotation.SpringGearEvent;
 
 /**
