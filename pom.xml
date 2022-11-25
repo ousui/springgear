@@ -8,6 +8,7 @@
 
     <modules>
         <module>springgear-core</module>
+<!--        <module>springgear-impl</module>-->
         <module>springgear-eventbus</module>
         <module>springgear-webmvc</module>
         <module>springgear-pending</module>

@@ -16,7 +16,7 @@ public class SpringGearInterruptException extends SpringGearException {
     @Getter
     private Object response;
 
-    public SpringGearInterruptException(String msg, int code) {
+    public SpringGearInterruptException(String msg, Object code) {
         super(msg, code);
     }
 

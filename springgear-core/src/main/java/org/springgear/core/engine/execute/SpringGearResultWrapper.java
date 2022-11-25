@@ -1,5 +1,7 @@
 package org.springgear.core.engine.execute;
 
+import org.springgear.exception.SpringGearError;
+
 /**
  * 出参处理接口
  * <p>
@@ -8,7 +10,7 @@ package org.springgear.core.engine.execute;
  * @author SHUAI.W
  * @since 2021/03/25
  **/
-public interface SpringGearResultProcessor<R> {
+public interface SpringGearResultWrapper<R> {
 
     /**
      * 默认 bean name，获取不到的话，则使用 original
@@ -20,6 +22,6 @@ public interface SpringGearResultProcessor<R> {
      *
      * @return
      */
-    R process(Object resp, SpringGearEngineParts entity);
+    R process(Object resp, SpringGearError ex, SpringGearEngineParts entity);
 
 }

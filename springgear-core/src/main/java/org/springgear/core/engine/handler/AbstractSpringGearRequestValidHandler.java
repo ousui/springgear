@@ -10,12 +10,12 @@ import org.springgear.support.constants.HttpStatus;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearOrderedHandler<REQ, RESP> {
+public abstract class AbstractSpringGearRequestValidHandler<T extends SpringGearContext<REQ, ?>, REQ, E> extends AbstractSpringGearHandler<T, E> {
 
     public abstract void verify(REQ request) throws IllegalArgumentException;
 
     @Override
-    public void handle(SpringGearContext<REQ, RESP> context) throws SpringGearInterruptException {
+    public void handle(T context) throws SpringGearInterruptException {
         try {
             this.verify(context.getRequest());
         } catch (IllegalArgumentException e) {

@@ -7,7 +7,7 @@ import org.springgear.core.engine.context.SpringGearContext;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public abstract class AbstractSpringGearEndingHandler<REQ, RESP> extends AbstractSpringGearOrderedHandler<REQ, RESP> {
+public abstract class AbstractSpringGearEndingHandler<T extends SpringGearContext<REQ, RESP>, REQ, RESP, E> extends AbstractSpringGearHandler<T, E> {
 
     /**
      * 调用结束方法，返回一个值，抽象方法会将此值放入 response
@@ -17,10 +17,10 @@ public abstract class AbstractSpringGearEndingHandler<REQ, RESP> extends Abstrac
      * @return 想要返回的 response
      * @throws Exception
      */
-    public abstract RESP end(SpringGearContext<REQ, RESP> context, REQ req) throws Exception;
+    public abstract RESP end(T context, REQ req) throws Exception;
 
     @Override
-    public void handle(SpringGearContext<REQ, RESP> context) throws Exception {
+    public void handle(T context) throws Exception {
         RESP resp = this.end(context, context.getRequest());
         context.setResponse(resp);
     }
