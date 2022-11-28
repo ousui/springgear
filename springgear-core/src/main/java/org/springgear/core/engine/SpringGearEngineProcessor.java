@@ -2,7 +2,7 @@ package org.springgear.core.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.core.engine.handler.SpringGearEngineHandler;
+import org.springgear.core.engine.handler.SpringGearEngineInterface;
 import org.springgear.core.support.SpringGearEngineUtils;
 import org.springgear.core.engine.execute.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.core.engine.execute.executors.DefaultSpringGearEngineExecutor;
@@ -47,9 +47,9 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     /**
      * 用于存储
      *
-     * @see SpringGearEngineHandler
+     * @see SpringGearEngineInterface
      */
-    private Map<String, List<SpringGearEngineHandler>> handlers = new HashMap<>();
+    private Map<String, List<SpringGearEngineInterface>> handlers = new HashMap<>();
 
     /**
      * 构造方法
@@ -65,7 +65,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     @Override
     public void afterPropertiesSet() {
         // 初始化 spring gear handler
-        SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearEngineHandler.class, handlers, (clazz) -> {
+        SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearEngineInterface.class, handlers, (clazz) -> {
             Qualifier group = clazz.getAnnotation(Qualifier.class);
 //            SpringGearEvent event = clazz.getAnnotation(SpringGearEvent.class);
 //            if (event != null) {

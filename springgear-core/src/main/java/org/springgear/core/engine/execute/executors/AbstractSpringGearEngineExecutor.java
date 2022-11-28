@@ -8,14 +8,12 @@ import org.springframework.util.ObjectUtils;
 import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.core.engine.execute.SpringGearEngineExecutor;
 import org.springgear.core.engine.execute.SpringGearEngineParts;
-import org.springgear.core.engine.handler.SpringGearEngineHandler;
+import org.springgear.core.engine.handler.SpringGearEngineInterface;
 import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearException;
 import org.springgear.exception.SpringGearInterruptException;
-import org.springgear.support.constants.HttpStatus;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
@@ -35,7 +33,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP, CTX extends SpringG
      * 使用的 handlers
      */
     @Setter
-    private List<SpringGearEngineHandler<CTX>> handlers;
+    private List<SpringGearEngineInterface<CTX>> handlers;
 
     @Setter
     private Class<CTX> contextClass;
@@ -72,7 +70,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP, CTX extends SpringG
 
         // 核心 handlers 循环处理
         for (int i = 0; i < handlers.size(); i++) {
-            SpringGearEngineHandler handler = handlers.get(i);
+            SpringGearEngineInterface handler = handlers.get(i);
             String classSimpleName = handler.getClass().getSimpleName();
             // 如果不支持，则 continue。
             if (!handler.supports(context)) {

@@ -41,7 +41,7 @@ public class SpringGearContext<REQ, RESP> implements Serializable {
     private final long timestamp;
 
     @Getter
-    private final Map<String, Object> values;
+    private final Map<String, Object> parameters;
     /**
      * 出参，读写
      */
@@ -58,7 +58,7 @@ public class SpringGearContext<REQ, RESP> implements Serializable {
         }
         this.source = parts.getSource();
         this.timestamp = parts.getTimestamp();
-        this.values = new HashMap<>();
+        this.parameters = new HashMap<>();
     }
 
 
@@ -79,12 +79,12 @@ public class SpringGearContext<REQ, RESP> implements Serializable {
      * @return
      */
     public SpringGearContext<REQ, RESP> setParameter(String key, Object value) {
-        values.put(key, value);
+        parameters.put(key, value);
         return this;
     }
 
     public <T> T getParameter(String key, T defaultValue) {
-        Optional<T> value = (Optional<T>) Optional.ofNullable(values.get(key));
+        Optional<T> value = (Optional<T>) Optional.ofNullable(parameters.get(key));
         return value.orElse(defaultValue);
     }
 

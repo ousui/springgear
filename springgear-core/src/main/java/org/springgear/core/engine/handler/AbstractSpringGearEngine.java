@@ -11,7 +11,11 @@ import org.springgear.exception.SpringGearExceptionThrows;
  * @author SHUAI.W 2018-01-10
  **/
 @Slf4j
-public abstract class AbstractSpringGearHandler<REQ, RESP> extends AbstractSpringGearEngine<SpringGearContext<REQ, RESP>, Object> {
+public abstract class AbstractSpringGearEngine<T extends SpringGearContext<?, ?>, E>
+        implements SpringGearEngineInterface<T>, SpringGearExceptionThrows<E>, Ordered {
 
-
+    @Override
+    public int getOrder() {
+        return 0;
+    }
 }
