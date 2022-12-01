@@ -3,7 +3,7 @@ package org.springgear.example.service;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.core.annotation.SpringGearProxy;
-import org.springgear.example.ctx.MyCtx;
+import org.springgear.example.ctx.MyCtxVal;
 
 import java.util.Map;
 
@@ -11,7 +11,7 @@ import java.util.Map;
 public interface MyServiceInterface {
 
     @SpringGearEngine(
-            handlers = @Qualifier("single"), ctx = MyCtx.class
+            handlers = @Qualifier("single"), contextValueClass = MyCtxVal.class
     )
     Map<String, String> single(String input);
 

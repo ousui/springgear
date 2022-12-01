@@ -10,14 +10,14 @@ import org.springgear.support.constants.HttpStatus;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public abstract class AbstractSpringGearRequestValidHandler<T extends SpringGearContext<REQ, ?>, REQ, E> extends AbstractSpringGearHandler<T, E> {
+public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearHandler<REQ, RESP> {
 
-    public abstract void verify(REQ request) throws IllegalArgumentException;
+    public abstract void verify(REQ request, SpringGearContext<REQ, RESP> context) throws IllegalArgumentException;
 
     @Override
-    public void handle(T context) throws SpringGearInterruptException {
+    public final void handle(SpringGearContext<REQ, RESP> context) throws SpringGearInterruptException {
         try {
-            this.verify(context.getRequest());
+            this.verify(context.getRequest(), context);
         } catch (IllegalArgumentException e) {
             SpringGearExceptions.throwInterruptException(HttpStatus.SC_BAD_REQUEST, "参数验证错误：{}。", e.getLocalizedMessage());
         }

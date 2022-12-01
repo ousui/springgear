@@ -1,8 +1,8 @@
 package org.springgear.core.annotation;
 
-import org.springgear.core.engine.context.SpringGearContext;
-import org.springgear.core.engine.execute.SpringGearResultWrapper;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springgear.core.engine.context.SpringGearContextValue;
+import org.springgear.core.engine.execute.SpringGearResultWrapper;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -49,6 +49,11 @@ public @interface SpringGearEngine {
      */
     Qualifier wrapper() default @Qualifier(SpringGearResultWrapper.DEFAULT_BEAN_NAME);
 
-    Class<? extends SpringGearContext> ctx() default SpringGearContext.class;
+    /**
+     * spring gear context value boxes class
+     *
+     * @return
+     */
+    Class<? extends SpringGearContextValue> contextValueClass() default SpringGearContextValue.class;
 
 }
