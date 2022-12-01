@@ -2,11 +2,13 @@ package org.springgear.core.engine.execute;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import lombok.ToString;
+import org.springframework.util.CollectionUtils;
 import org.springgear.core.annotation.SpringGearEngine;
-import org.springgear.exception.SpringGearError;
+import org.springgear.core.engine.context.SpringGearContextValue;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.Objects;
 
 /**
@@ -21,18 +23,38 @@ public class SpringGearEngineParts {
 
     private final static String SOURCE = "_spring_gear_default_";
 
-    @Getter
-    private final String source;
+    private final Object request;
     @Getter
     private final Object[] args;
     @Getter
+    private final String source;
+    @Getter
     private final long timestamp;
+    @Getter
+    private final SpringGearContextValue contextValue;
+
+    @Getter
+    private final String beanName;
 
 
-    public SpringGearEngineParts(Object[] args, String beanName, SpringGearEngine engineAnno) {
+    public SpringGearEngineParts(Object[] args, String beanName, SpringGearEngine engineAnno) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         this.args = args;
+
+        if (this.args == null || this.args.length == 0) {
+            this.request = null;
+        } else {
+            this.request = this.args[0];
+        }
+
+        this.beanName = beanName;
         this.timestamp = System.currentTimeMillis();
         this.source = Objects.toString(engineAnno.source(), SOURCE);
+        Class<? extends SpringGearContextValue> contextValueClass = engineAnno.contextValueClass();
+        this.contextValue = contextValueClass.getDeclaredConstructor().newInstance();
     }
 
+
+    public <R> R getRequest() {
+        return (R) request;
+    }
 }

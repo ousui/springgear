@@ -11,7 +11,7 @@ import org.springgear.exception.SpringGearExceptionThrows;
  * @author SHUAI.W 2018-01-10
  **/
 @Slf4j
-public abstract class AbstractSpringGearHandler<REQ, RESP> extends AbstractSpringGearEngine<SpringGearContext<REQ, RESP>, Object> {
+public abstract class AbstractSpringGearHandler<REQ, RESP> implements SpringGearEngineInterface<REQ, RESP>, SpringGearExceptionThrows<Object>, Ordered {
 
 
 }

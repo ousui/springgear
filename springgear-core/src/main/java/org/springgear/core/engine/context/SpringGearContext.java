@@ -1,14 +1,14 @@
 package org.springgear.core.engine.context;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.Assert;
 import org.springgear.core.engine.execute.SpringGearEngineParts;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 /**
@@ -17,7 +17,8 @@ import java.util.Optional;
  * @author SHUAI.W 2018-01-10
  **/
 @ToString
-public class SpringGearContext<REQ, RESP> implements Serializable {
+@RequiredArgsConstructor
+public final class SpringGearContext<REQ, RESP> implements Serializable {
 
     /**
      * 入参，只读
@@ -40,26 +41,21 @@ public class SpringGearContext<REQ, RESP> implements Serializable {
     @Getter
     private final long timestamp;
 
-    @Getter
-    private final Map<String, Object> parameters;
+    /**
+     * 上下文传递数据用的 value
+     */
+    private final SpringGearContextValue values;
+
+    public <V extends SpringGearContextValue> V getValues() {
+        return (V) values;
+    }
+
     /**
      * 出参，读写
      */
     @Getter
     @Setter
     private RESP response;
-
-    public SpringGearContext(SpringGearEngineParts parts) {
-        this.args = parts.getArgs();
-        if (this.args == null || this.args.length == 0) {
-            this.request = null;
-        } else {
-            this.request = (REQ) this.args[0];
-        }
-        this.source = parts.getSource();
-        this.timestamp = parts.getTimestamp();
-        this.parameters = new HashMap<>();
-    }
 
 
     public <T> T getArgument(int position) {
@@ -78,18 +74,18 @@ public class SpringGearContext<REQ, RESP> implements Serializable {
      * @param value
      * @return
      */
-    public SpringGearContext<REQ, RESP> setParameter(String key, Object value) {
-        parameters.put(key, value);
+    public SpringGearContext<REQ, RESP> setValue(String key, Object value) {
+        this.values.put(key, value);
         return this;
     }
 
-    public <T> T getParameter(String key, T defaultValue) {
-        Optional<T> value = (Optional<T>) Optional.ofNullable(parameters.get(key));
+    public <T> T getValue(String key, T defaultValue) {
+        Optional<T> value = (Optional<T>) Optional.ofNullable(this.getValues().get(key));
         return value.orElse(defaultValue);
     }
 
-    public <T> T getParameter(String key) {
-        return this.getParameter(key, null);
+    public <T> T getValue(String key) {
+        return this.getValue(key, null);
     }
 
 }

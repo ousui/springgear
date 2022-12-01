@@ -17,7 +17,7 @@ import java.util.concurrent.TimeoutException;
  * @since 2020/12/13
  **/
 @Slf4j
-public class DefaultSpringGearEngineExecutor<RESP> extends AbstractSpringGearEngineExecutor<RESP, SpringGearContext<?, RESP>> {
+public class DefaultSpringGearEngineExecutor<RESP> extends AbstractSpringGearEngineExecutor<RESP> {
 
     /**
      * 针对各种异常的处理。

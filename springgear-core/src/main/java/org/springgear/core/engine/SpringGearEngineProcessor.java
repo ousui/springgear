@@ -22,7 +22,11 @@ import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * spring gear 框架核心业务流程处理类
@@ -49,7 +53,7 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
      *
      * @see SpringGearEngineInterface
      */
-    private Map<String, List<SpringGearEngineInterface>> handlers = new HashMap<>();
+    private Map<String, List<SpringGearEngineInterface>> handlers = new ConcurrentHashMap<>();
 
     /**
      * 构造方法
@@ -137,7 +141,6 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
                 // handler
                 .addPropertyValue("handlers", this.getBeanList(handlers, this.handlers, true))
                 // context class
-                .addPropertyValue("contextClass", engineAnno.ctx())
                 .setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME)
                 .getBeanDefinition();
 
