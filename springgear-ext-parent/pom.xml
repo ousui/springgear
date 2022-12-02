@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springgear</groupId>
+        <groupId>org.ousui.springgear</groupId>
         <artifactId>springgear-parent</artifactId>
         <version>1.0.0-build-snapshot</version>
     </parent>
@@ -23,7 +23,7 @@
         <dependencies>
 
             <dependency>
-                <groupId>org.springgear</groupId>
+                <groupId>org.ousui.springgear</groupId>
                 <artifactId>springgear-bom</artifactId>
 <!--                <version>${ver.revision}</version>-->
                 <scope>import</scope>
@@ -36,7 +36,7 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springgear</groupId>
+            <groupId>org.ousui.springgear</groupId>
             <artifactId>springgear-core</artifactId>
 <!--            <version>1.1.0-SNAPSHOT</version>-->
         </dependency>

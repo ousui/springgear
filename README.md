@@ -16,7 +16,7 @@ SpringGear 最大限度的使用尽量少的依赖，来实现丰富的功能。
 
 SpringGear 的核心功能即：将本应该直接实现的接口，使用 **动态代理** 模式，将工作任务分配到每个流程步骤，从而将业务逻辑进行解耦，分布进行，并将结果传递给下一步。
 
-[查看举例说明](./documents/doc-example-01.md)
+[查看举例说明](docs/doc-example-01.md)
 
 ---
 
@@ -26,7 +26,7 @@ SpringGear 使用的工作流模式(Workflow)，脱胎于管道模式(Pipeline)�
 
 下图为 SpringGear 的核心流程
 
-![](./documents/springgear-flow.png)
+![](docs/springgear-flow.png)
 
 ---
 
@@ -58,18 +58,18 @@ SpringGear 框架的包命名方式和核心思路，主要参考 Spring 框架�
 
 ## SpringGear 历史演进
 
-[查看](./documents/doc-history.md)
+[查看](docs/doc-history.md)
 
 ---
 
 ## SpringGear 版本历史
 
-[查看](./documents/doc-change.md)
+[查看](docs/doc-change.md)
 
 ---
 
 ## SpringGear 使用手册
 
-[查看](./documents/doc-guide.md)
+[查看](docs/doc-guide.md)
 
 ---

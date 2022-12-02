@@ -8,7 +8,7 @@
             ...
             <!-- 在 maven 依赖管理中，添加 -->
             <dependency>
-                <groupId>org.springgear</groupId>
+                <groupId>org.ousui.springgear</groupId>
                 <artifactId>springgear-support</artifactId>
                 <version>${ver.springgear}</version>
                 <scope>import</scope>
@@ -19,7 +19,7 @@
     <!-- 在需要的地方，添加相关依赖，注意所有扩展依赖都依赖于 springgear-core，不必重复引用 -->
     <dependencies>
         <dependency>
-            <groupId>org.springgear</groupId>
+            <groupId>org.ousui.springgear</groupId>
             <artifactId>springgear-extend-jsf</artifactId>
             <version>${ver.springgear}</version>
         </dependency>
