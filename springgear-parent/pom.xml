@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
     <parent>
         <artifactId>springgear-build</artifactId>
         <groupId>org.ousui.springgear</groupId>
         <version>2.1.0-SNAPSHOT</version>
     </parent>
-    <modelVersion>4.0.0</modelVersion>
-
     <artifactId>springgear-parent</artifactId>
     <packaging>pom</packaging>
 
@@ -27,27 +27,23 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/ousui/springgear-parent.git</connection>
-        <url>https://github.com/ousui/springgear-parent/</url>
-        <developerConnection>scm:git:git@github.com:ousui/springgear-parent.git</developerConnection>
+        <connection>scm:git:https://github.com/ousui/springgear.git</connection>
+        <url>https://github.com/ousui/springgear/</url>
+        <developerConnection>scm:git:git@github.com:ousui/springgear.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <issueManagement>
-        <url>https://github.com/ousui/springgear-parent/issues</url>
+        <url>https://github.com/ousui/springgear/issues</url>
     </issueManagement>
 
     <properties>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
         <!-- 常用版本 -->
         <ver.spring>5.3.22</ver.spring>
         <!--由于elastic-job中用到了低版本的guava，故这里使用低版本的guava，否则elastic-job启动会有问题-->
         <ver.guava>20.0</ver.guava>
 
-        <ver.slf4j>1.7.30</ver.slf4j>
-        <ver.log4j2>2.14.0</ver.log4j2>
+        <ver.slf4j>2.0.5</ver.slf4j>
+        <ver.log4j2>2.19.0</ver.log4j2>
     </properties>
 
     <dependencyManagement>

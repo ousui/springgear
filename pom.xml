@@ -21,13 +21,13 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/ousui/springgear-parent.git</connection>
-        <url>https://github.com/ousui/springgear-parent/</url>
-        <developerConnection>scm:git:git@github.com:ousui/springgear-parent.git</developerConnection>
+        <connection>scm:git:https://github.com/ousui/springgear.git</connection>
+        <url>https://github.com/ousui/springgear/</url>
+        <developerConnection>scm:git:git@github.com:ousui/springgear.git</developerConnection>
         <tag>HEAD</tag>
     </scm>
     <issueManagement>
-        <url>https://github.com/ousui/springgear-parent/issues</url>
+        <url>https://github.com/ousui/springgear/issues</url>
     </issueManagement>
 
     <modules>
@@ -48,17 +48,7 @@
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-
-        <!--统一源代码编码方式-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-
-        <!-- 常用版本 -->
-        <ver.spring>5.3.22</ver.spring>
-        <!--由于elastic-job中用到了低版本的guava，故这里使用低版本的guava，否则elastic-job启动会有问题-->
-        <ver.guava>20.0</ver.guava>
-
-        <ver.slf4j>1.7.30</ver.slf4j>
-        <ver.log4j2>2.14.0</ver.log4j2>
     </properties>
 
     <profiles>
