@@ -3,9 +3,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springgear</groupId>
+        <groupId>org.ousui.springgear</groupId>
         <artifactId>springgear-parent</artifactId>
         <version>2.1.0-SNAPSHOT</version>
+        <relativePath>../springgear-parent</relativePath>
     </parent>
 
     <artifactId>springgear-eventbus</artifactId>
@@ -13,7 +14,7 @@
     <dependencies>
 
         <dependency>
-            <groupId>org.springgear</groupId>
+            <groupId>org.ousui.springgear</groupId>
             <artifactId>springgear-core</artifactId>
         </dependency>
 

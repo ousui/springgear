@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>org.springgear</groupId>
+
+    <parent>
+        <groupId>org.ousui.springgear</groupId>
+        <artifactId>springgear-build</artifactId>
+        <version>2.1.0-SNAPSHOT</version>
+    </parent>
     <artifactId>springgear-bom</artifactId>
-    <version>2.1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -12,21 +16,45 @@
         springgear 组件装箱清单
     </description>
 
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+    <developers>
+        <developer>
+            <name>ousui</name>
+            <url>https://ousui.org</url>
+            <email>x@ousui.org</email>
+        </developer>
+    </developers>
+    <scm>
+        <connection>scm:git:https://github.com/ousui/springgear.git</connection>
+        <url>https://github.com/ousui/springgear/</url>
+        <developerConnection>scm:git:git@github.com:ousui/springgear.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+    <issueManagement>
+        <url>https://github.com/ousui/springgear/issues</url>
+    </issueManagement>
+
     <dependencyManagement>
 
         <dependencies>
             <dependency>
-                <groupId>org.springgear</groupId>
+                <groupId>org.ousui.springgear</groupId>
                 <artifactId>springgear-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springgear</groupId>
+                <groupId>org.ousui.springgear</groupId>
                 <artifactId>springgear-eventbus</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
-                <groupId>org.springgear</groupId>
+                <groupId>org.ousui.springgear</groupId>
                 <artifactId>springgear-webmvc</artifactId>
                 <version>${project.version}</version>
             </dependency>
