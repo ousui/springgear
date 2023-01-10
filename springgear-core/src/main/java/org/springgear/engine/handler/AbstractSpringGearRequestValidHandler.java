@@ -1,6 +1,7 @@
-package org.springgear.core.engine.handler;
+package org.springgear.engine.handler;
 
-import org.springgear.core.engine.context.SpringGearContext;
+import org.springframework.core.Ordered;
+import org.springgear.engine.context.SpringGearContext;
 import org.springgear.exception.SpringGearExceptions;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.support.constants.HttpStatus;
@@ -10,7 +11,7 @@ import org.springgear.support.constants.HttpStatus;
  *
  * @author SHUAI.W 2017-12-13
  **/
-public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearHandler<REQ, RESP> {
+public abstract class AbstractSpringGearRequestValidHandler<REQ, RESP> extends AbstractSpringGearOrderedHandler<REQ, RESP> {
 
     public abstract void verify(REQ request, SpringGearContext<REQ, RESP> context) throws IllegalArgumentException;
 

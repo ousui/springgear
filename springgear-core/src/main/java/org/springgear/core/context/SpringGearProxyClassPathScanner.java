@@ -10,7 +10,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.engine.beans.factory.SpringGearProxyFactoryBean;
 
 import java.util.Arrays;
 import java.util.Set;

@@ -1,11 +1,11 @@
-package org.springgear.core.engine;
+package org.springgear.engine;
 
 import org.springframework.beans.factory.InitializingBean;
-import org.springgear.core.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.core.engine.handler.SpringGearEngineInterface;
-import org.springgear.core.support.SpringGearEngineUtils;
-import org.springgear.core.engine.execute.executors.AbstractSpringGearEngineExecutor;
-import org.springgear.core.engine.execute.executors.DefaultSpringGearEngineExecutor;
+import org.springgear.engine.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.engine.handler.SpringGearEngineInterface;
+import org.springgear.engine.support.SpringGearEngineUtils;
+import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.engine.execute.executors.DefaultSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -21,6 +21,7 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
+import javax.annotation.Priority;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -157,7 +158,6 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     private <T> List<T> getBeanList(Qualifier[] qualifiers, Map<String, List<T>> map, boolean sort) {
         List<T> beans = new ArrayList<>();
         for (Qualifier qualifier : qualifiers) {
-
             final Collection<T> elements = map.get(qualifier.value());
             if (CollectionUtils.isEmpty(elements)) {
                 continue;
@@ -166,8 +166,6 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         }
         if (sort) {
             // 使用 spring 提供的 ordered 比较器进行比较排序。
-//            AnnotationAwareOrderComparator x = new AnnotationAwareOrderComparator();
-//            x.
             AnnotationAwareOrderComparator.sort(beans);
         }
         return beans;

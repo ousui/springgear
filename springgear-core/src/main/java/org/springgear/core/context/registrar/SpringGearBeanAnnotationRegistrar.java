@@ -53,18 +53,21 @@ public class SpringGearBeanAnnotationRegistrar extends AbstractSpringGearBeanReg
         );
 
         // 查找 ComponentScan 的包路径
-        AnnotationAttributes componentScanAnno = AnnotationAttributes
-                .fromMap(importingClassMetadata.getAnnotationAttributes(ComponentScan.class.getName()));
+        AnnotationAttributes componentScanAnno = AnnotationAttributes.fromMap(
+                importingClassMetadata.getAnnotationAttributes(ComponentScan.class.getName())
+        );
 
+        // 扫描注解
         if (null != componentScanAnno) {
             basePackages.addAll(
-                    Arrays.stream(componentScanAnno.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList()));
-
+                    Arrays.stream(componentScanAnno.getStringArray("value")).filter(StringUtils::hasText).collect(Collectors.toList())
+            );
             basePackages.addAll(Arrays.stream(componentScanAnno.getStringArray("basePackages")).filter(StringUtils::hasText)
-                    .collect(Collectors.toList()));
-
+                    .collect(Collectors.toList())
+            );
             basePackages.addAll(Arrays.stream(componentScanAnno.getClassArray("basePackageClasses")).map(ClassUtils::getPackageName)
-                    .collect(Collectors.toList()));
+                    .collect(Collectors.toList())
+            );
         }
         return basePackages;
     }

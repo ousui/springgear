@@ -11,6 +11,6 @@
         <property name="basePackages" value="org.springgear.example.service" />
     </bean>
 
-    <bean class="org.springgear.core.engine.SpringGearEngineProcessor" />
+    <bean class="org.springgear.engine.SpringGearEngineProcessor" />
 
 </beans>
