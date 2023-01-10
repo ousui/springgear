@@ -1,4 +1,4 @@
-package org.springgear.core.support;
+package org.springgear.engine.support;
 
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.support.enums.SymbolEnum;

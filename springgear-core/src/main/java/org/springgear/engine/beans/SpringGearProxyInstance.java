@@ -1,12 +1,12 @@
-package org.springgear.core.beans;
+package org.springgear.engine.beans;
 
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springgear.core.engine.execute.results.SpringGearOriginalResultWrapper;
-import org.springgear.core.engine.execute.SpringGearResultWrapper;
-import org.springgear.core.engine.execute.SpringGearEngineParts;
-import org.springgear.core.support.SpringGearEngineUtils;
-import org.springgear.core.engine.execute.SpringGearEngineExecutor;
+import org.springgear.engine.execute.results.SpringGearOriginalResultWrapper;
+import org.springgear.engine.execute.SpringGearResultWrapper;
+import org.springgear.engine.execute.SpringGearEngineParts;
+import org.springgear.engine.support.SpringGearEngineUtils;
+import org.springgear.engine.execute.SpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearInterruptException;
@@ -32,7 +32,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
     private final ApplicationContext applicationContext;
 
     /**
-     * bean 缓存
+     * bean 缓存，使用线程安全的 ConcurrentHashMap
      */
     private final Map<String, SpringGearEngineExecutor<?>> interfaceCachedMap = new ConcurrentHashMap<>();
 

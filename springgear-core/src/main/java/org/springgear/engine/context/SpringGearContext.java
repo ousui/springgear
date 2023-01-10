@@ -1,14 +1,12 @@
-package org.springgear.core.engine.context;
+package org.springgear.engine.context;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.util.Assert;
-import org.springgear.core.engine.execute.SpringGearEngineParts;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 /**

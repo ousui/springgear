@@ -2,8 +2,8 @@ package org.springgear.example.service.single;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springgear.core.engine.context.SpringGearContext;
-import org.springgear.core.engine.handler.AbstractSpringGearEndingHandler;
+import org.springgear.engine.context.SpringGearContext;
+import org.springgear.engine.handler.AbstractSpringGearEndingHandler;
 
 @Qualifier("single")
 @Component

@@ -1,6 +1,6 @@
-package org.springgear.core.beans.factory;
+package org.springgear.engine.beans.factory;
 
-import org.springgear.core.beans.SpringGearProxyInstance;
+import org.springgear.engine.beans.SpringGearProxyInstance;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;

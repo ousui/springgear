@@ -1,15 +1,15 @@
-package org.springgear.core.engine.execute.executors;
+package org.springgear.engine.execute.executors;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springgear.core.engine.context.SpringGearContext;
-import org.springgear.core.engine.context.SpringGearContextValue;
-import org.springgear.core.engine.execute.SpringGearEngineExecutor;
-import org.springgear.core.engine.execute.SpringGearEngineParts;
-import org.springgear.core.engine.handler.SpringGearEngineInterface;
+import org.springgear.engine.context.SpringGearContext;
+import org.springgear.engine.context.SpringGearContextValue;
+import org.springgear.engine.execute.SpringGearEngineExecutor;
+import org.springgear.engine.execute.SpringGearEngineParts;
+import org.springgear.engine.handler.SpringGearEngineInterface;
 import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearException;
@@ -69,7 +69,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
             SpringGearEngineInterface handler = handlers.get(i);
             String classSimpleName = handler.getClass().getSimpleName();
             // 如果不支持，则 continue。
-            if (!handler.supports(context)) {
+            if (false == handler.supports(context)) {
                 if (log.isDebugEnabled()) {
                     log.debug("TS[{}-{}] Handler '{}#{}' don't support.", source, timestamp, classSimpleName, i);
                 }

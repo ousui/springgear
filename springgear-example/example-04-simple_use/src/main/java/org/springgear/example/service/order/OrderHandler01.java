@@ -3,8 +3,8 @@ package org.springgear.example.service.order;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springgear.core.engine.context.SpringGearContext;
-import org.springgear.core.engine.handler.AbstractSpringGearHandler;
+import org.springgear.engine.context.SpringGearContext;
+import org.springgear.engine.handler.AbstractSpringGearHandler;
 
 @Qualifier("order")
 @Component

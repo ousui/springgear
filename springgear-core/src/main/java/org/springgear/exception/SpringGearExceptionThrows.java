@@ -1,7 +1,11 @@
 package org.springgear.exception;
 
-import org.slf4j.helpers.MessageFormatter;
 
+/**
+ * 用于底层抛出 spring gear 异常的接口
+ *
+ * @param <T>
+ */
 public interface SpringGearExceptionThrows<T> {
 
     /**

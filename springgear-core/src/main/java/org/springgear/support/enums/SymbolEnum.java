@@ -1,5 +1,7 @@
 package org.springgear.support.enums;
 
+import lombok.NonNull;
+
 /**
  * @author SHUAI.W
  * @date 2020/01/10
@@ -26,8 +28,7 @@ public enum SymbolEnum {
     STAR("*"),
     HASH("#"),
     BLANK(" "),
-    UNDER_SCORE("_")
-    ;
+    UNDER_SCORE("_");
 
     private final String symbol;
 
@@ -45,6 +46,7 @@ public enum SymbolEnum {
 
     /**
      * 被包含
+     *
      * @param string
      * @return
      */
@@ -55,6 +57,12 @@ public enum SymbolEnum {
         return string.contains(this.symbol);
     }
 
+    /**
+     * 字符串被开始于
+     *
+     * @param string
+     * @return
+     */
     public boolean beStartsWith(String string) {
         if (string == null || string.trim().isEmpty()) {
             return false;
@@ -62,10 +70,26 @@ public enum SymbolEnum {
         return string.startsWith(this.symbol);
     }
 
+    /**
+     * 字符传被结束于
+     *
+     * @param string
+     * @return
+     */
     public boolean beEndsWith(String string) {
         if (string == null || string.trim().isEmpty()) {
             return false;
         }
         return string.endsWith(this.symbol);
+    }
+
+    /**
+     * 使用字符包裹
+     *
+     * @param string
+     * @return
+     */
+    public String wrap(String string) {
+        return this.symbol + string + this.symbol;
     }
 }
