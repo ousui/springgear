@@ -3,8 +3,7 @@ package org.springgear.example.service.single;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springgear.engine.context.SpringGearContext;
-import org.springgear.engine.handler.AbstractSpringGearHandler;
-import org.springgear.engine.handler.AbstractSpringGearOrderedHandler;
+import org.springgear.impl.engine.handler.AbstractSpringGearOrderedHandler;
 import org.springgear.example.ctx.MyCtxVal;
 
 @Qualifier("single")

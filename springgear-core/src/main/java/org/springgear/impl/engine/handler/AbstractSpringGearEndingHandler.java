@@ -1,6 +1,5 @@
-package org.springgear.engine.handler;
+package org.springgear.impl.engine.handler;
 
-import org.springframework.core.Ordered;
 import org.springgear.engine.context.SpringGearContext;
 
 /**
