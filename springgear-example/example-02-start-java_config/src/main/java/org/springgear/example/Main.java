@@ -4,6 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springgear.core.context.registrar.SpringGearBeanNormalRegistrar;
 import org.springgear.engine.SpringGearEngineProcessor;
+import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.example.service.MyServiceInterface;
 
 public class Main {
@@ -20,7 +21,7 @@ public class Main {
 
         @Bean
         public SpringGearEngineProcessor springGearEngineProcessor() {
-            return new SpringGearEngineProcessor();
+            return new SpringGearEngineProcessor(AbstractSpringGearEngineExecutor.class);
         }
 
     }

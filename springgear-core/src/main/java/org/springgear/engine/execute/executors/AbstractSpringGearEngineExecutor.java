@@ -10,6 +10,7 @@ import org.springgear.engine.context.SpringGearContextValue;
 import org.springgear.engine.execute.SpringGearEngineExecutor;
 import org.springgear.engine.execute.SpringGearEngineParts;
 import org.springgear.engine.handler.SpringGearEngineInterface;
+import org.springgear.engine.execute.SpringGearEngineHandlerAware;
 import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearException;
@@ -25,7 +26,7 @@ import java.util.List;
  * @see org.springgear.core.annotation.SpringGearEngine
  **/
 @Slf4j
-public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGearEngineExecutor<RESP>, BeanNameAware {
+public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGearEngineExecutor<RESP>, SpringGearEngineHandlerAware, BeanNameAware {
 
     @Setter
     private String beanName;
@@ -33,8 +34,12 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
     /**
      * 使用的 handlers
      */
-    @Setter
-    private List<SpringGearEngineInterface<?, RESP>> handlers;
+    private List<SpringGearEngineInterface<?, ?>> handlers;
+
+    @Override
+    public void setHandlers(List<SpringGearEngineInterface<?, ?>> handlers) {
+        this.handlers = handlers;
+    }
 
     @Override
     public RESP execute(SpringGearEngineParts parts) throws SpringGearError {
@@ -57,8 +62,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
 
         SpringGearContextValue cv = parts.getContextValue();
 
-        SpringGearContext<?, RESP> context = new SpringGearContext<>(request, args, source, timestamp, cv);
-
+        SpringGearContext context = new SpringGearContext<>(request, args, source, timestamp, cv);
 
         if (log.isDebugEnabled()) { // 入参记录，方便问题跟踪，只记录一次就好。
             log.debug("TS[{}-{}] Handler '{}' start work. request is: {}", source, timestamp, beanName, request);
@@ -93,7 +97,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
             log.info("TS[{}-{}] Handler '{}' finished work. duration {} ms. context is: {}", source, timestamp, beanName, (System.currentTimeMillis() - timestamp), context);
         }
 
-        final RESP response = context.getResponse();
+        final RESP response = (RESP) context.getResponse();
         return response;
     }
 
