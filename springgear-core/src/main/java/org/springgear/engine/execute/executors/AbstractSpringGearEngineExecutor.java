@@ -34,12 +34,8 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
     /**
      * 使用的 handlers
      */
+    @Setter
     private List<SpringGearEngineInterface<?, ?>> handlers;
-
-    @Override
-    public void setHandlers(List<SpringGearEngineInterface<?, ?>> handlers) {
-        this.handlers = handlers;
-    }
 
     @Override
     public RESP execute(SpringGearEngineParts parts) throws SpringGearError {

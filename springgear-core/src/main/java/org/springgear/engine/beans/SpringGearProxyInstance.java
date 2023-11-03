@@ -52,7 +52,9 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
         SpringGearEngine engineAnno = method.getAnnotation(SpringGearEngine.class);
         // 没有注解抛出异常，也可以考虑做一个默认的实现。
         if (null == engineAnno) {
-            log.error("You may be not use annotation '{}' for this method ''.", SpringGearEngine.class, method.getName());
+            log.error("You may be not use annotation '{}' for this method '{}'. When you want invoke this method, you must use the annotation for it.",
+                    SpringGearEngine.class, method.getName()
+            );
             throw new UnsupportedOperationException(
                     String.format("class '%s' is an interface, you must use annotation '@%s' to implementation method '%s'.",
                             proxy.getClass().getSimpleName(), SpringGearEngine.class.getSimpleName(), method.getName())
@@ -101,26 +103,23 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
      * @return
      */
     private SpringGearResultWrapper<?> getResultWrapper(String beanName) {
-        if (false == StringUtils.hasText(beanName)) {
+        if (!StringUtils.hasText(beanName)) {
             beanName = SpringGearResultWrapper.DEFAULT_BEAN_NAME;
         }
-        // 获取所有 wrapper 类
-        Map<String, SpringGearResultWrapper> wrappers = this.applicationContext.getBeansOfType(SpringGearResultWrapper.class);
 
-        SpringGearResultWrapper<?> wrapper = null;
-        if (false == CollectionUtils.isEmpty(wrappers)) {
-            wrapper = wrappers.get(beanName);
+        // 如果没有这个 bean，返回
+        if (!this.applicationContext.containsBean(beanName)) {
+            return new SpringGearOriginalResultWrapper<>();
         }
-        if (wrapper != null) {
-            return wrapper;
-        }
-        return new SpringGearOriginalResultWrapper<>();
+
+        // 获取指定 bean name 的 wrapper
+        return this.applicationContext.getBean(beanName, SpringGearResultWrapper.class);
     }
 
     /**
      * 从缓存池或者 application context 中查找 bean
      *
-     * @param engineBeanName
+     * @param engineBeanName 引擎 beanname
      * @return
      */
     private SpringGearEngineExecutor<?> getEngineBean(String engineBeanName) {
@@ -129,11 +128,6 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
             return face;
         }
         Object bean = applicationContext.getBean(engineBeanName);
-
-        if (null == bean) {
-            log.error("not found this bean '{}'. ", engineBeanName);
-            throw new NoSuchBeanDefinitionException(engineBeanName);
-        }
 
         if (!SpringGearEngineExecutor.class.isAssignableFrom(bean.getClass())) {
             log.error("Bean '{}' type '{}' is wrong, need type '{}'.", engineBeanName, bean.getClass(), SpringGearEngineExecutor.class);

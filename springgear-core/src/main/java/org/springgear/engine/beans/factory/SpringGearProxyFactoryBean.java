@@ -32,7 +32,7 @@ public class SpringGearProxyFactoryBean<T> implements FactoryBean<T>, Applicatio
     /**
      * spring 会调用构造方法将 接口类型传入。
      *
-     * @param interfaceProxy
+     * @param interfaceProxy 代理接口
      */
     private SpringGearProxyFactoryBean(Class<T> interfaceProxy) {
         this.interfaceProxy = interfaceProxy;
@@ -41,13 +41,11 @@ public class SpringGearProxyFactoryBean<T> implements FactoryBean<T>, Applicatio
 
     @Override
     public T getObject() {
-        /**
-         * 新建代理实例。
-         */
+        // 新建代理实例。
         SpringGearProxyInstance instance = new SpringGearProxyInstance(applicationContext);
-        /**
-         * 这里直接使用 jdk 的动态代理实现，性能损耗较大，但是考虑到这里只在初始化的时候使用，忽略掉性能损耗。
-         * 调优可以考虑使用 spring 的 代理实现。
+        /*
+          这里直接使用 jdk 的动态代理实现，性能损耗较大，但是考虑到这里只在初始化的时候使用，忽略掉性能损耗。
+          调优可以考虑使用 spring 的 代理实现。
          */
         return (T) Proxy.newProxyInstance(this.interfaceProxy.getClassLoader(), new Class[]{this.interfaceProxy}, instance);
     }
