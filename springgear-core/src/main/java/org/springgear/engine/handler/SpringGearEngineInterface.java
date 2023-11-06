@@ -28,4 +28,10 @@ public interface SpringGearEngineInterface<REQ, RESP> {
     void handle(SpringGearContext<REQ, RESP> context) throws Exception;
 
 
+    /**
+     * TODO 定义一个异常处理器
+     * @param ex
+     */
+    default void onException(Exception ex){
+    };
 }

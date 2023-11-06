@@ -29,7 +29,7 @@ public class DefaultSpringGearEngineExecutor<RESP> extends AbstractSpringGearEng
      * @throws SpringGearException
      */
     @Override
-    protected void onThrowable(SpringGearContext context, Throwable e) throws SpringGearException {
+    public void onThrowable(SpringGearContext context, Throwable e) throws SpringGearException {
 
         String source = context.getSource();
         long timestamp = context.getTimestamp();
