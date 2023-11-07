@@ -39,7 +39,7 @@
     <properties>
         <!-- 常用版本 -->
         <ver.spring>5.3.22</ver.spring>
-        <!--由于elastic-job中用到了低版本的guava，故这里使用低版本的guava，否则elastic-job启动会有问题-->
+
         <ver.guava>20.0</ver.guava>
 
         <ver.slf4j>2.0.5</ver.slf4j>

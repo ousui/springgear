@@ -11,6 +11,8 @@
         <property name="basePackages" value="org.springgear.example.service" />
     </bean>
 
-    <bean class="org.springgear.engine.SpringGearEngineProcessor" />
+    <bean class="org.springgear.engine.SpringGearEngineProcessor" >
+        <constructor-arg index="0" value="org.springgear.impl.engine.execute.DefaultSpringGearEngineExecutor" />
+    </bean>
 
 </beans>
