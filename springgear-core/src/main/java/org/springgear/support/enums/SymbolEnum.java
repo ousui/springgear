@@ -1,6 +1,8 @@
 package org.springgear.support.enums;
 
 import lombok.NonNull;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * @author SHUAI.W
@@ -91,5 +93,20 @@ public enum SymbolEnum {
      */
     public String wrap(String string) {
         return this.symbol + string + this.symbol;
+    }
+
+    /**
+     * repeat the char with specify count
+     *
+     * @param count the repeat count
+     * @return the result
+     */
+    public String repeat(int count) {
+        Assert.state(count > 0, "repeat count must great 0.");
+        StringBuilder sb = new StringBuilder(this.symbol);
+        for (int i = 0; i < count; i++) {
+            sb.append(this.symbol);
+        }
+        return sb.toString();
     }
 }

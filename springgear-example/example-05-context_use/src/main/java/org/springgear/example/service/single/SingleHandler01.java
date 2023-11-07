@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.Ordered;
 import org.springframework.stereotype.Component;
 import org.springgear.engine.context.SpringGearContext;
-import org.springgear.engine.handler.AbstractSpringGearHandler;
+import org.springgear.impl.engine.handler.AbstractSpringGearHandler;
 import org.springgear.example.ctx.MyCtxVal;
 
 @Qualifier("single")

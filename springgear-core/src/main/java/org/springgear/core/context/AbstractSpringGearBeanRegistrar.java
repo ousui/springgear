@@ -31,7 +31,7 @@ public abstract class AbstractSpringGearBeanRegistrar implements ResourceLoaderA
         SpringGearProxyClassPathScanner scanner = new SpringGearProxyClassPathScanner(registry);
 
         scanner.setResourceLoader(this.resourceLoader);
-        scanner.scan(basePackages.toArray(new String[basePackages.size()]));
+        scanner.scan(basePackages.toArray(new String[0]));
     }
 
 

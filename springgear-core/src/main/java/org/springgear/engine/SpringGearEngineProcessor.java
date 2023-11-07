@@ -2,10 +2,10 @@ package org.springgear.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springgear.engine.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.engine.execute.SpringGearEngineHandlerAware;
+import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.engine.handler.SpringGearEngineInterface;
 import org.springgear.engine.support.SpringGearEngineUtils;
-import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
-import org.springgear.engine.execute.executors.DefaultSpringGearEngineExecutor;
 import org.springgear.core.annotation.SpringGearEngine;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -21,13 +21,13 @@ import org.springframework.core.annotation.AnnotationAwareOrderComparator;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.CollectionUtils;
 
-import javax.annotation.Priority;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Supplier;
 
 /**
  * spring gear 框架核心业务流程处理类
@@ -59,10 +59,6 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     /**
      * 构造方法
      */
-    public SpringGearEngineProcessor() {
-        this(DefaultSpringGearEngineExecutor.class);
-    }
-
     public SpringGearEngineProcessor(Class<? extends AbstractSpringGearEngineExecutor> springGearEngineExecutorClass) {
         this.springGearEngineExecutorClass = springGearEngineExecutorClass;
     }
@@ -138,9 +134,9 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
         // 生成 bean definition，将 handler 注入，形成工作工作流
         final Qualifier[] handlers = engineAnno.handlers();
 
-        BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(springGearEngineExecutorClass)
+        BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(this.springGearEngineExecutorClass)
                 // handler
-                .addPropertyValue("handlers", this.getBeanList(handlers, this.handlers, true))
+                .addPropertyValue(SpringGearEngineHandlerAware.PROPERTY_FIELD_NAME, this.getBeanList(handlers, this.handlers, true))
                 // context class
                 .setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME)
                 .getBeanDefinition();
