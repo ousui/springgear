@@ -86,11 +86,7 @@ public class SpringGearEngineUtils {
             }
 
             String key = group.value();
-            List<T> value = map.get(key);
-            if (value == null) {
-                value = new ArrayList<>();
-                map.put(key, value);
-            }
+            List<T> value = map.computeIfAbsent(key, k -> new ArrayList<>());
             value.add(bean);
         });
     }

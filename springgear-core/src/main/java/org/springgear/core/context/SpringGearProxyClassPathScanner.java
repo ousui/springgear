@@ -1,5 +1,6 @@
 package org.springgear.core.context;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionDefaults;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -63,11 +64,11 @@ public class SpringGearProxyClassPathScanner extends ClassPathBeanDefinitionScan
         try {
             proxyInterface = Class.forName(targetBeanClassName);
         } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+            logger.error("class not found: ", e);
             return;
         }
 
-        SpringGearProxy proxyAnnotation = (SpringGearProxy) proxyInterface.getAnnotation(SpringGearProxy.class);
+        SpringGearProxy proxyAnnotation = proxyInterface.getAnnotation(SpringGearProxy.class);
         if (proxyAnnotation == null) {
             logger.info(String.format("this component is not '%s', need not process.", SpringGearProxy.class));
             return;

@@ -1,6 +1,5 @@
 package org.springgear.engine.beans;
 
-import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springgear.engine.execute.results.SpringGearOriginalResultWrapper;
 import org.springgear.engine.execute.SpringGearResultWrapper;
@@ -13,7 +12,6 @@ import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.exception.SpringGearException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.cglib.proxy.InvocationHandler;
 import org.springframework.context.ApplicationContext;
 
