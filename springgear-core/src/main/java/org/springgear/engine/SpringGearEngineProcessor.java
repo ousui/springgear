@@ -1,8 +1,8 @@
 package org.springgear.engine;
 
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springgear.engine.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.engine.execute.SpringGearEngineHandlerAware;
 import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.engine.handler.SpringGearEngineInterface;
 import org.springgear.engine.support.SpringGearEngineUtils;
@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.config.BeanDefinition;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.context.ApplicationContext;
@@ -27,7 +26,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 /**
  * spring gear 框架核心业务流程处理类
@@ -36,7 +34,9 @@ import java.util.function.Supplier;
  * @since 2020/12/13
  **/
 @Slf4j
-public class SpringGearEngineProcessor implements BeanPostProcessor, ApplicationContextAware, InitializingBean {
+public class SpringGearEngineProcessor implements
+        BeanPostProcessor
+        , ApplicationContextAware, InitializingBean {
 
     /**
      * spring 上下文
@@ -56,6 +56,8 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
      */
     private Map<String, List<SpringGearEngineInterface>> handlers = new ConcurrentHashMap<>();
 
+    private final static String PROPERTY_FIELD_HANDLER_NAME = "handlers";
+
     /**
      * 构造方法
      */
@@ -66,20 +68,12 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
     @Override
     public void afterPropertiesSet() {
         // 初始化 spring gear handler
-        SpringGearEngineUtils.groupBeanByQualifier(applicationContext, SpringGearEngineInterface.class, handlers, (clazz) -> {
-            Qualifier group = clazz.getAnnotation(Qualifier.class);
-//            SpringGearEvent event = clazz.getAnnotation(SpringGearEvent.class);
-//            if (event != null) {
-//                SpringGearEventListener listener = applicationContext.getBean(event.bean());
-//                if (listener != null) {
-//                    listeners.put(group.value(), listener);
-//                } else {
-//                    log.warn("the bean of class {} have no instance, please use spring do it.", event.bean());
-//                }
-//            }
-            return group;
-        });
-
+        SpringGearEngineUtils.groupBeanByQualifier(
+                applicationContext,
+                SpringGearEngineInterface.class,
+                handlers,
+                (clazz) -> clazz.getAnnotation(Qualifier.class)
+        );
     }
 
 
@@ -127,16 +121,16 @@ public class SpringGearEngineProcessor implements BeanPostProcessor, Application
 
         // 如果这个 bean 已经注册
         if (this.applicationContext.containsBean(beanName)) {
-            log.warn("spring has contains the bean {}", beanName);
+            log.warn("springgear has contains the bean {}", beanName);
             return;
         }
 
         // 生成 bean definition，将 handler 注入，形成工作工作流
-        final Qualifier[] handlers = engineAnno.handlers();
-
+        final Qualifier[] handlerDefs = engineAnno.handlers();
+        List<?> handlers = this.getBeanList(handlerDefs, this.handlers, true);
         BeanDefinition beanDefinition = BeanDefinitionBuilder.genericBeanDefinition(this.springGearEngineExecutorClass)
                 // handler
-                .addPropertyValue(SpringGearEngineHandlerAware.PROPERTY_FIELD_NAME, this.getBeanList(handlers, this.handlers, true))
+                .addPropertyValue(PROPERTY_FIELD_HANDLER_NAME, handlers)
                 // context class
                 .setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_NAME)
                 .getBeanDefinition();
