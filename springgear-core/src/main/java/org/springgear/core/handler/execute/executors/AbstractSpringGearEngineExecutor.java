@@ -1,15 +1,15 @@
-package org.springgear.engine.execute.executors;
+package org.springgear.core.handler.execute.executors;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springgear.engine.context.SpringGearContext;
-import org.springgear.engine.context.SpringGearContextValue;
-import org.springgear.engine.execute.SpringGearEngineExecutor;
-import org.springgear.engine.execute.SpringGearEngineParts;
-import org.springgear.engine.handler.SpringGearEngineInterface;
+import org.springgear.core.engine.context.SpringGearContextValue;
+import org.springgear.core.handler.execute.SpringGearEngineParts;
+import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.core.handler.execute.SpringGearEngineExecutor;
+import org.springgear.core.handler.SpringGearHandlerInterface;
 import org.springgear.exception.SpringGearError;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
      * 使用的 handlers
      */
     @Setter
-    private List<SpringGearEngineInterface<?, ?>> handlers;
+    private List<SpringGearHandlerInterface<?, ?>> handlers;
 
     @Override
     public RESP execute(SpringGearEngineParts parts) throws SpringGearError {
@@ -63,7 +63,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
 
         // 核心 handlers 循环处理
         for (int i = 0; i < handlers.size(); i++) {
-            SpringGearEngineInterface<?, ?> handler = handlers.get(i);
+            SpringGearHandlerInterface<?, ?> handler = handlers.get(i);
             String classSimpleName = handler.getClass().getSimpleName();
             // 如果不支持，则 continue。
             if (!handler.supports(context)) {

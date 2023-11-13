@@ -2,9 +2,9 @@ package org.springgear.example;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
-import org.springgear.core.context.registrar.SpringGearBeanNormalRegistrar;
-import org.springgear.engine.SpringGearEngineProcessor;
-import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.context.SpringGearBeanRegistrar;
+import org.springgear.core.engine.SpringGearEngineBeanProcessor;
+import org.springgear.core.handler.execute.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.example.service.MyServiceInterface;
 
 public class Main {
@@ -15,13 +15,13 @@ public class Main {
     static class Config {
 
         @Bean
-        public SpringGearBeanNormalRegistrar springGearBeanRegister() {
-            return new SpringGearBeanNormalRegistrar("org.springgear.example.service");
+        public SpringGearBeanRegistrar springGearBeanRegister() {
+            return new SpringGearBeanRegistrar("org.springgear.example.service");
         }
 
         @Bean
-        public SpringGearEngineProcessor springGearEngineProcessor() {
-            return new SpringGearEngineProcessor(AbstractSpringGearEngineExecutor.class);
+        public SpringGearEngineBeanProcessor springGearEngineProcessor() {
+            return new SpringGearEngineBeanProcessor(AbstractSpringGearEngineExecutor.class);
         }
 
     }

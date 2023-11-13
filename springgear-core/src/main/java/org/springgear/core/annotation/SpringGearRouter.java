@@ -17,7 +17,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Component
-public @interface SpringGearProxy {
+public @interface SpringGearRouter {
 
     /**
      * 该组件的 bean 默认生成的 bean name。

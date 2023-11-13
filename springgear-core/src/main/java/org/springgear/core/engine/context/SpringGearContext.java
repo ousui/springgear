@@ -1,4 +1,4 @@
-package org.springgear.engine.context;
+package org.springgear.core.engine.context;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

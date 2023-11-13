@@ -1,11 +1,11 @@
-package org.springgear.engine.beans;
+package org.springgear.core.engine.beans;
 
 import org.springframework.util.StringUtils;
-import org.springgear.engine.execute.results.SpringGearOriginalResultWrapper;
-import org.springgear.engine.execute.SpringGearResultWrapper;
-import org.springgear.engine.execute.SpringGearEngineParts;
-import org.springgear.engine.support.SpringGearEngineUtils;
-import org.springgear.engine.execute.SpringGearEngineExecutor;
+import org.springgear.core.handler.execute.SpringGearEngineExecutor;
+import org.springgear.core.handler.execute.SpringGearEngineParts;
+import org.springgear.core.handler.execute.SpringGearResultWrapper;
+import org.springgear.core.handler.execute.results.SpringGearOriginalResultWrapper;
+import org.springgear.core.engine.support.SpringGearEngineUtils;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearInterruptException;

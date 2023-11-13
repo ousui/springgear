@@ -1,6 +1,6 @@
 package org.springgear.impl.engine.handler;
 
-import org.springgear.engine.context.SpringGearContext;
+import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.exception.SpringGearExceptions;
 import org.springgear.exception.SpringGearInterruptException;
 import org.springgear.support.constants.HttpStatus;

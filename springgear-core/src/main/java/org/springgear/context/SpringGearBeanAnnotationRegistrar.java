@@ -1,4 +1,4 @@
-package org.springgear.core.context.registrar;
+package org.springgear.context;
 
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ComponentScan;
@@ -9,7 +9,7 @@ import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springgear.EnableSpringGear;
-import org.springgear.core.context.AbstractSpringGearBeanRegistrar;
+import org.springgear.context.AbstractSpringGearBeanRegistrar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class SpringGearBeanAnnotationRegistrar extends AbstractSpringGearBeanReg
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
         MergedAnnotations annotations = importingClassMetadata.getAnnotations();
-        if (false == annotations.isPresent(EnableSpringGear.class)) {
+        if (!annotations.isPresent(EnableSpringGear.class)) {
             return;
         }
 

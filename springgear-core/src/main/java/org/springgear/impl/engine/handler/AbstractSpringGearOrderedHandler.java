@@ -2,7 +2,6 @@ package org.springgear.impl.engine.handler;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.Ordered;
-import org.springgear.engine.handler.SpringGearEngineInterface;
 
 /**
  * handler 的抽象实现。

@@ -1,11 +1,11 @@
-package org.springgear.engine;
+package org.springgear.core.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springgear.engine.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
-import org.springgear.engine.handler.SpringGearEngineInterface;
-import org.springgear.engine.support.SpringGearEngineUtils;
+import org.springgear.core.engine.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.core.handler.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.core.handler.SpringGearHandlerInterface;
+import org.springgear.core.engine.support.SpringGearEngineUtils;
 import org.springgear.core.annotation.SpringGearEngine;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -28,13 +28,13 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * spring gear 框架核心业务流程处理类
+ * spring gear SpringGearEngine bean 处理器
  *
  * @author SHUAI.W
  * @since 2020/12/13
  **/
 @Slf4j
-public class SpringGearEngineProcessor implements
+public class SpringGearEngineBeanProcessor implements
         BeanPostProcessor
         , ApplicationContextAware, InitializingBean {
 
@@ -52,16 +52,16 @@ public class SpringGearEngineProcessor implements
     /**
      * 用于存储
      *
-     * @see SpringGearEngineInterface
+     * @see SpringGearHandlerInterface
      */
-    private Map<String, List<SpringGearEngineInterface>> handlers = new ConcurrentHashMap<>();
+    private Map<String, List<SpringGearHandlerInterface>> handlers = new ConcurrentHashMap<>();
 
     private final static String PROPERTY_FIELD_HANDLER_NAME = "handlers";
 
     /**
      * 构造方法
      */
-    public SpringGearEngineProcessor(Class<? extends AbstractSpringGearEngineExecutor> springGearEngineExecutorClass) {
+    public SpringGearEngineBeanProcessor(Class<? extends AbstractSpringGearEngineExecutor> springGearEngineExecutorClass) {
         this.springGearEngineExecutorClass = springGearEngineExecutorClass;
     }
 
@@ -70,7 +70,7 @@ public class SpringGearEngineProcessor implements
         // 初始化 spring gear handler
         SpringGearEngineUtils.groupBeanByQualifier(
                 applicationContext,
-                SpringGearEngineInterface.class,
+                SpringGearHandlerInterface.class,
                 handlers,
                 (clazz) -> clazz.getAnnotation(Qualifier.class)
         );

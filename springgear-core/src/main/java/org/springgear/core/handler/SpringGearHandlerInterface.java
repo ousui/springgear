@@ -1,13 +1,13 @@
-package org.springgear.engine.handler;
+package org.springgear.core.handler;
 
-import org.springgear.engine.context.SpringGearContext;
+import org.springgear.core.engine.context.SpringGearContext;
 
 /**
  * -
  *
  * @author SHUAI.W 2018-01-10
  **/
-public interface SpringGearEngineInterface<REQ, RESP> {
+public interface SpringGearHandlerInterface<REQ, RESP> {
 
     /**
      * 是否支持本 handler 处理。

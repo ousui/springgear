@@ -1,35 +1,39 @@
-package org.springgear.core.context;
+package org.springgear.core.router;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionDefaults;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
-import org.springgear.core.annotation.SpringGearProxy;
+import org.springgear.core.annotation.SpringGearRouter;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springgear.engine.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.core.engine.beans.factory.SpringGearProxyFactoryBean;
 
 import java.util.Arrays;
 import java.util.Set;
 
 /**
  * 类扫描及后续处理的一个 scanner.
- * 主要是扫描 {@link SpringGearProxy} 的代理接口，形成可执行的接口
+ * 主要是扫描 {@link SpringGearRouter} 的代理接口，形成可执行的接口
  *
  * @author
- * @see SpringGearProxy
+ * @see SpringGearRouter
  **/
-public class SpringGearProxyClassPathScanner extends ClassPathBeanDefinitionScanner {
+public class SpringGearRouterBeanProcessor extends ClassPathBeanDefinitionScanner {
 
 
-    public SpringGearProxyClassPathScanner(BeanDefinitionRegistry registry) {
+    /**
+     * 使用注解 {@link SpringGearRouter} 的过滤保证可以找到需要代理的类
+     *
+     * @param registry
+     * @see SpringGearRouter
+     */
+    public SpringGearRouterBeanProcessor(BeanDefinitionRegistry registry) {
         super(registry, false);
-        // 使用注解 {@link SpringGearProxy} 的过滤保证可以找到需要代理的类
-        this.addIncludeFilter(new AnnotationTypeFilter(SpringGearProxy.class));
+        this.addIncludeFilter(new AnnotationTypeFilter(SpringGearRouter.class));
     }
 
 
@@ -57,20 +61,26 @@ public class SpringGearProxyClassPathScanner extends ClassPathBeanDefinitionScan
 
     public void autoProxyInterface(BeanDefinitionHolder holder) {
         GenericBeanDefinition definition = (GenericBeanDefinition) holder.getBeanDefinition();
-        String targetBeanClassName = definition.getBeanClassName();
+        String originInterfaceClassName = definition.getBeanClassName();
         String beanName = holder.getBeanName();
 
-        Class<?> proxyInterface;
+        if (originInterfaceClassName == null) {
+            logger.error("originInterfaceClassName not define for bean: " + beanName);
+            return;
+        }
+
+        Class<?> originInterface;
         try {
-            proxyInterface = Class.forName(targetBeanClassName);
+            originInterface = Class.forName(originInterfaceClassName);
         } catch (ClassNotFoundException e) {
             logger.error("class not found: ", e);
             return;
         }
 
-        SpringGearProxy proxyAnnotation = proxyInterface.getAnnotation(SpringGearProxy.class);
+        SpringGearRouter proxyAnnotation = originInterface.getAnnotation(SpringGearRouter.class);
+        // 一般情况这里都有值
         if (proxyAnnotation == null) {
-            logger.info(String.format("this component is not '%s', need not process.", SpringGearProxy.class));
+            logger.info(String.format("this component is not '%s', need not process.", SpringGearRouter.class));
             return;
         }
 
@@ -79,25 +89,13 @@ public class SpringGearProxyClassPathScanner extends ClassPathBeanDefinitionScan
                         beanName, definition.getBeanClassName())
         );
 
-        /**
-         * 放入两个构造参数
-         */
-        definition.getConstructorArgumentValues().addGenericArgumentValue(targetBeanClassName);
         definition.setBeanClass(SpringGearProxyFactoryBean.class);
-        definition.applyDefaults(new BeanDefinitionDefaults());
-
-        /**
-         * 默认按照类型注入
-         */
+        definition.getConstructorArgumentValues()
+                .addGenericArgumentValue(originInterfaceClassName);
+        definition.applyDefaults(this.getBeanDefinitionDefaults());
+        // 默认按照类型注入
         definition.setAutowireMode(AbstractBeanDefinition.AUTOWIRE_BY_TYPE);
     }
-
-//    private void registerBeanDefinition(String name, BeanDefinition beanDefinition) {
-//        logger.info(String.format("Creating bean with name '%s' for '%s'.", name, beanDefinition.getBeanClassName()));
-//
-//        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) applicationContext.getAutowireCapableBeanFactory();
-//        beanFactory.registerBeanDefinition(name, beanDefinition);
-//    }
 
     /**
      * 必须是接口类型

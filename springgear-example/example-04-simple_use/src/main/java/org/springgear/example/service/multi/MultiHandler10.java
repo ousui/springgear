@@ -2,7 +2,7 @@ package org.springgear.example.service.multi;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import org.springgear.engine.context.SpringGearContext;
+import org.springgear.core.engine.context.SpringGearContext;
 import org.springgear.impl.engine.handler.AbstractSpringGearOrderedHandler;
 
 @Qualifier("multi")
