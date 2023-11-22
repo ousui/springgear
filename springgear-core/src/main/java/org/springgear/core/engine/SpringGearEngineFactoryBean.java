@@ -1,6 +1,5 @@
-package org.springgear.core.engine.beans.factory;
+package org.springgear.core.engine;
 
-import org.springgear.core.engine.beans.SpringGearProxyInstance;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +16,7 @@ import org.springframework.context.ApplicationContextAware;
  * @author SHUAI.W 2018-01-06
  **/
 @Slf4j
-public class SpringGearProxyFactoryBean<T> implements FactoryBean<T>, ApplicationContextAware, BeanNameAware {
+public class SpringGearEngineFactoryBean<T> implements FactoryBean<T>, ApplicationContextAware, BeanNameAware {
 
     private final Class<T> interfaceProxy;
 
@@ -34,7 +33,7 @@ public class SpringGearProxyFactoryBean<T> implements FactoryBean<T>, Applicatio
      *
      * @param interfaceProxy 代理接口
      */
-    private SpringGearProxyFactoryBean(Class<T> interfaceProxy) {
+    private SpringGearEngineFactoryBean(Class<T> interfaceProxy) {
         this.interfaceProxy = interfaceProxy;
     }
 
@@ -42,7 +41,7 @@ public class SpringGearProxyFactoryBean<T> implements FactoryBean<T>, Applicatio
     @Override
     public T getObject() {
         // 新建代理实例。
-        SpringGearProxyInstance instance = new SpringGearProxyInstance(applicationContext);
+        SpringGearEngineInvoker instance = new SpringGearEngineInvoker(applicationContext);
         /*
           这里直接使用 jdk 的动态代理实现，性能损耗较大，但是考虑到这里只在初始化的时候使用，忽略掉性能损耗。
           调优可以考虑使用 spring 的 代理实现。

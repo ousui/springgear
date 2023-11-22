@@ -1,14 +1,14 @@
-package org.springgear.core.handler.execute.executors;
+package org.springgear.core.engine.executors;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springgear.core.engine.context.SpringGearContextValue;
-import org.springgear.core.handler.execute.SpringGearEngineParts;
-import org.springgear.core.engine.context.SpringGearContext;
-import org.springgear.core.handler.execute.SpringGearEngineExecutor;
+import org.springgear.core.context.SpringGearContextValue;
+import org.springgear.core.engine.request.SpringGearEngineParts;
+import org.springgear.core.context.SpringGearContext;
+import org.springgear.core.engine.SpringGearEngineExecutor;
 import org.springgear.core.handler.SpringGearHandlerInterface;
 import org.springgear.exception.SpringGearError;
 

@@ -1,6 +1,6 @@
 package org.springgear.core.handler;
 
-import org.springgear.core.engine.context.SpringGearContext;
+import org.springgear.core.context.SpringGearContext;
 
 /**
  * -

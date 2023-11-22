@@ -1,11 +1,10 @@
-package org.springgear.core.engine.beans;
+package org.springgear.core.engine;
 
 import org.springframework.util.StringUtils;
-import org.springgear.core.handler.execute.SpringGearEngineExecutor;
-import org.springgear.core.handler.execute.SpringGearEngineParts;
-import org.springgear.core.handler.execute.SpringGearResultWrapper;
-import org.springgear.core.handler.execute.results.SpringGearOriginalResultWrapper;
-import org.springgear.core.engine.support.SpringGearEngineUtils;
+import org.springgear.core.engine.request.SpringGearEngineParts;
+import org.springgear.core.engine.wrapper.SpringGearResultWrapper;
+import org.springgear.core.engine.wrapper.SpringGearOriginalResultWrapper;
+import org.springgear.support.utils.SpringGearUtils;
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearInterruptException;
@@ -25,7 +24,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * 这里使用内部类直接实现。
  */
 @Slf4j
-public class SpringGearProxyInstance implements InvocationHandler, Serializable {
+public class SpringGearEngineInvoker implements InvocationHandler, Serializable {
 
     private final ApplicationContext applicationContext;
 
@@ -34,7 +33,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
      */
     private final Map<String, SpringGearEngineExecutor<?>> interfaceCachedMap = new ConcurrentHashMap<>();
 
-    public SpringGearProxyInstance(ApplicationContext applicationContext) {
+    public SpringGearEngineInvoker(ApplicationContext applicationContext) {
         this.applicationContext = applicationContext;
     }
 
@@ -60,7 +59,7 @@ public class SpringGearProxyInstance implements InvocationHandler, Serializable 
         }
 
         // 获取指定的 core name
-        String beanName = SpringGearEngineUtils.getInterfaceBeanName(engineAnno, method);
+        String beanName = SpringGearUtils.getInterfaceBeanName(engineAnno, method);
         // 单例
         SpringGearEngineExecutor<?> engine = this.getEngineBean(beanName);
 

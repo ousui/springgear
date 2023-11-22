@@ -1,8 +1,7 @@
-package org.springgear.core.handler.execute.results;
+package org.springgear.core.engine.wrapper;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springgear.core.handler.execute.SpringGearEngineParts;
-import org.springgear.core.handler.execute.SpringGearResultWrapper;
+import org.springgear.core.engine.request.SpringGearEngineParts;
 import org.springgear.exception.SpringGearError;
 
 /**

@@ -4,7 +4,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springgear.context.SpringGearBeanRegistrar;
 import org.springgear.core.engine.SpringGearEngineBeanProcessor;
-import org.springgear.core.handler.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.core.engine.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.example.service.MyServiceInterface;
 
 public class Main {

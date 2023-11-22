@@ -1,4 +1,4 @@
-package org.springgear.core.engine.context;
+package org.springgear.core.context;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +23,14 @@ public final class SpringGearContext<REQ, RESP> implements Serializable {
      */
     @Getter
     private final REQ request;
+
+    /**
+     * 出参，读写
+     */
+    @Getter
+    @Setter
+    private RESP response;
+
     /**
      * 所有入参
      */
@@ -47,13 +55,6 @@ public final class SpringGearContext<REQ, RESP> implements Serializable {
     public <V extends SpringGearContextValue> V getValues() {
         return (V) values;
     }
-
-    /**
-     * 出参，读写
-     */
-    @Getter
-    @Setter
-    private RESP response;
 
 
     public <T> T getArgument(int position) {

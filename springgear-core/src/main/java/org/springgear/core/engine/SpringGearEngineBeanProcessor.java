@@ -2,10 +2,9 @@ package org.springgear.core.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springgear.core.engine.beans.factory.SpringGearProxyFactoryBean;
-import org.springgear.core.handler.execute.executors.AbstractSpringGearEngineExecutor;
+import org.springgear.core.engine.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.core.handler.SpringGearHandlerInterface;
-import org.springgear.core.engine.support.SpringGearEngineUtils;
+import org.springgear.support.utils.SpringGearUtils;
 import org.springgear.core.annotation.SpringGearEngine;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -68,7 +67,7 @@ public class SpringGearEngineBeanProcessor implements
     @Override
     public void afterPropertiesSet() {
         // 初始化 spring gear handler
-        SpringGearEngineUtils.groupBeanByQualifier(
+        SpringGearUtils.groupBeanByQualifier(
                 applicationContext,
                 SpringGearHandlerInterface.class,
                 handlers,
@@ -79,7 +78,7 @@ public class SpringGearEngineBeanProcessor implements
 
     /**
      * 在初始化前，需要处理 spring gear core 注解的相关方法。</br >
-     * 基于 {@link SpringGearProxyFactoryBean} 进行处理，非工厂方法不进行处理
+     * 基于 {@link SpringGearEngineFactoryBean} 进行处理，非工厂方法不进行处理
      *
      * @param bean
      * @param beanName
@@ -89,12 +88,12 @@ public class SpringGearEngineBeanProcessor implements
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
         // 判断是否为代理工厂类
-        if (!SpringGearProxyFactoryBean.class.isAssignableFrom(bean.getClass())) {
+        if (!SpringGearEngineFactoryBean.class.isAssignableFrom(bean.getClass())) {
             return bean;
         }
-        log.info("This bean '{}' need process to spring gear core '{}'.", bean.getClass(), SpringGearProxyFactoryBean.class);
+        log.info("This bean '{}' need process to spring gear core '{}'.", bean.getClass(), SpringGearEngineFactoryBean.class);
 
-        Class proxyInterface = ((SpringGearProxyFactoryBean) bean).getObjectType();
+        Class proxyInterface = ((SpringGearEngineFactoryBean) bean).getObjectType();
         Method[] methods = proxyInterface.getDeclaredMethods();
 
         // 找到接口中所有标记 @SpringGearEngine 注解的方法，未标记不做处理
@@ -117,7 +116,7 @@ public class SpringGearEngineBeanProcessor implements
      * @param method
      */
     private void buildSpringGearEngine(SpringGearEngine engineAnno, Method method) {
-        String beanName = SpringGearEngineUtils.getInterfaceBeanName(engineAnno, method);
+        String beanName = SpringGearUtils.getInterfaceBeanName(engineAnno, method);
 
         // 如果这个 bean 已经注册
         if (this.applicationContext.containsBean(beanName)) {
@@ -136,7 +135,7 @@ public class SpringGearEngineBeanProcessor implements
                 .getBeanDefinition();
 
         // 注册 bean definition
-        SpringGearEngineUtils.registerBeanDefinition(applicationContext, beanName, beanDefinition);
+        SpringGearUtils.registerBeanDefinition(applicationContext, beanName, beanDefinition);
     }
 
     /**

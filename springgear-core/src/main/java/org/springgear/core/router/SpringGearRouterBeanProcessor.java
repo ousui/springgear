@@ -1,7 +1,6 @@
 package org.springgear.core.router;
 
 import org.springframework.beans.factory.support.AbstractBeanDefinition;
-import org.springframework.beans.factory.support.BeanDefinitionDefaults;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springgear.core.annotation.SpringGearRouter;
@@ -10,7 +9,7 @@ import org.springframework.beans.factory.config.BeanDefinitionHolder;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
-import org.springgear.core.engine.beans.factory.SpringGearProxyFactoryBean;
+import org.springgear.core.engine.SpringGearEngineFactoryBean;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -89,7 +88,7 @@ public class SpringGearRouterBeanProcessor extends ClassPathBeanDefinitionScanne
                         beanName, definition.getBeanClassName())
         );
 
-        definition.setBeanClass(SpringGearProxyFactoryBean.class);
+        definition.setBeanClass(SpringGearEngineFactoryBean.class);
         definition.getConstructorArgumentValues()
                 .addGenericArgumentValue(originInterfaceClassName);
         definition.applyDefaults(this.getBeanDefinitionDefaults());
