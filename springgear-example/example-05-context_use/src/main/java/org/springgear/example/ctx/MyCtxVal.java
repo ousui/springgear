@@ -1,6 +1,6 @@
 package org.springgear.example.ctx;
 
-import org.springgear.engine.context.SpringGearContextValue;
+import org.springgear.core.context.SpringGearContextValue;
 
 
 public class MyCtxVal extends SpringGearContextValue {

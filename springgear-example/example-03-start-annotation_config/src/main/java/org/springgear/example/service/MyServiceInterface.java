@@ -2,9 +2,9 @@ package org.springgear.example.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springgear.core.annotation.SpringGearEngine;
-import org.springgear.core.annotation.SpringGearProxy;
+import org.springgear.core.annotation.SpringGearRouter;
 
-@SpringGearProxy
+@SpringGearRouter
 public interface MyServiceInterface {
 
     @SpringGearEngine(

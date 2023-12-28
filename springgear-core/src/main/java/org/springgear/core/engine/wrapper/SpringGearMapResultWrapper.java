@@ -1,7 +1,6 @@
-package org.springgear.engine.execute.results;
+package org.springgear.core.engine.wrapper;
 
-import org.springgear.engine.execute.SpringGearEngineParts;
-import org.springgear.engine.execute.SpringGearResultWrapper;
+import org.springgear.core.engine.request.SpringGearEngineParts;
 import org.springgear.exception.SpringGearError;
 
 import java.util.HashMap;

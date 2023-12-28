@@ -1,5 +1,6 @@
-package org.springgear.engine.execute;
+package org.springgear.core.engine.wrapper;
 
+import org.springgear.core.engine.request.SpringGearEngineParts;
 import org.springgear.exception.SpringGearError;
 
 /**

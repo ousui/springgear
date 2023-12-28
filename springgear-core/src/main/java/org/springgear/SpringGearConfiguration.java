@@ -4,7 +4,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.type.AnnotationMetadata;
-import org.springgear.engine.SpringGearEngineProcessor;
+import org.springgear.core.engine.SpringGearEngineBeanProcessor;
 import org.springgear.impl.engine.execute.DefaultSpringGearEngineExecutor;
 
 @Configuration
@@ -13,9 +13,9 @@ class SpringGearConfiguration implements ImportAware {
     private EnableSpringGear enableSpringGearAnno;
 
     @Bean
-    public SpringGearEngineProcessor springGearEngineProcessor() {
+    public SpringGearEngineBeanProcessor springGearEngineProcessor() {
         // auto find executor
-        return new SpringGearEngineProcessor(DefaultSpringGearEngineExecutor.class);
+        return new SpringGearEngineBeanProcessor(DefaultSpringGearEngineExecutor.class);
     }
 
     @Override

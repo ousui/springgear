@@ -1,4 +1,4 @@
-package org.springgear.core.context.registrar;
+package org.springgear.context;
 
 import lombok.Setter;
 import org.springframework.util.StringUtils;
@@ -7,7 +7,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
-import org.springgear.core.context.AbstractSpringGearBeanRegistrar;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +27,7 @@ import java.util.stream.Collectors;
  * @since 1.0.0 2018-01-05
  **/
 @Slf4j
-public class SpringGearBeanNormalRegistrar extends AbstractSpringGearBeanRegistrar implements BeanDefinitionRegistryPostProcessor {
+public class SpringGearBeanRegistrar extends AbstractSpringGearBeanRegistrar implements BeanDefinitionRegistryPostProcessor {
 
     /**
      * 需要扫描的包。
@@ -37,11 +36,11 @@ public class SpringGearBeanNormalRegistrar extends AbstractSpringGearBeanRegistr
     private List<String> basePackages;
 
 
-    public SpringGearBeanNormalRegistrar() {
+    public SpringGearBeanRegistrar() {
         this("");
     }
 
-    public SpringGearBeanNormalRegistrar(String... basePackages) {
+    public SpringGearBeanRegistrar(String... basePackages) {
         if (this.basePackages == null) {
             this.basePackages = new ArrayList<>();
         }
@@ -65,13 +64,5 @@ public class SpringGearBeanNormalRegistrar extends AbstractSpringGearBeanRegistr
     @Override
     public void postProcessBeanFactory(ConfigurableListableBeanFactory configurableListableBeanFactory) throws BeansException {
 //        保持空
-    }
-
-    public List<String> setBasePackage(String basePackage) {
-        if (this.basePackages == null) {
-            this.basePackages = new ArrayList<>();
-        }
-        this.basePackages.add(basePackage);
-        return this.basePackages;
     }
 }

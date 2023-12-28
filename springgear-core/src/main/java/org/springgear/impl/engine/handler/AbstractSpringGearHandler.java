@@ -1,8 +1,7 @@
 package org.springgear.impl.engine.handler;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
-import org.springgear.engine.handler.SpringGearEngineInterface;
+import org.springgear.core.handler.SpringGearHandlerInterface;
 import org.springgear.exception.SpringGearExceptionThrows;
 
 /**
@@ -11,7 +10,7 @@ import org.springgear.exception.SpringGearExceptionThrows;
  * @author SHUAI.W 2018-01-10
  **/
 @Slf4j
-public abstract class AbstractSpringGearHandler<REQ, RESP> implements SpringGearEngineInterface<REQ, RESP>, SpringGearExceptionThrows<Object> {
+public abstract class AbstractSpringGearHandler<REQ, RESP> implements SpringGearHandlerInterface<REQ, RESP>, SpringGearExceptionThrows<Object> {
 
 
 }

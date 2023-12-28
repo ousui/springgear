@@ -1,4 +1,4 @@
-package org.springgear.engine.context;
+package org.springgear.core.context;
 
 import java.io.Serializable;
 import java.util.HashMap;

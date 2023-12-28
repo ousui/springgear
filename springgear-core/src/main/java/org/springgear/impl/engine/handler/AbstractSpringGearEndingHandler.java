@@ -1,6 +1,6 @@
 package org.springgear.impl.engine.handler;
 
-import org.springgear.engine.context.SpringGearContext;
+import org.springgear.core.context.SpringGearContext;
 
 /**
  * 抽象实现 AbstractApiWorkflowHandler，对工程结尾做一个了断。

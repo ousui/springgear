@@ -1,4 +1,4 @@
-package org.springgear.engine.support;
+package org.springgear.support.utils;
 
 import org.springgear.core.annotation.SpringGearEngine;
 import org.springgear.support.enums.SymbolEnum;
@@ -21,7 +21,7 @@ import java.util.function.Function;
  * @since 2020/12/13
  **/
 @Slf4j
-public class SpringGearEngineUtils {
+public class SpringGearUtils {
 
     /**
      * 代理类 bean 的前缀

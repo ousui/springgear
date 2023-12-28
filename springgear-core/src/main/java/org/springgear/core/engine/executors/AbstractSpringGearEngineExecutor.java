@@ -1,20 +1,16 @@
-package org.springgear.engine.execute.executors;
+package org.springgear.core.engine.executors;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.BeanNameAware;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
-import org.springgear.engine.context.SpringGearContext;
-import org.springgear.engine.context.SpringGearContextValue;
-import org.springgear.engine.execute.SpringGearEngineExecutor;
-import org.springgear.engine.execute.SpringGearEngineParts;
-import org.springgear.engine.handler.SpringGearEngineInterface;
-import org.springgear.engine.execute.SpringGearEngineHandlerAware;
-import org.springgear.exception.SpringGearContinueException;
+import org.springgear.core.context.SpringGearContextValue;
+import org.springgear.core.engine.request.SpringGearEngineParts;
+import org.springgear.core.context.SpringGearContext;
+import org.springgear.core.engine.SpringGearEngineExecutor;
+import org.springgear.core.handler.SpringGearHandlerInterface;
 import org.springgear.exception.SpringGearError;
-import org.springgear.exception.SpringGearException;
-import org.springgear.exception.SpringGearInterruptException;
 
 import java.util.List;
 
@@ -26,7 +22,7 @@ import java.util.List;
  * @see org.springgear.core.annotation.SpringGearEngine
  **/
 @Slf4j
-public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGearEngineExecutor<RESP>, SpringGearEngineHandlerAware, BeanNameAware {
+public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGearEngineExecutor<RESP>, BeanNameAware {
 
     @Setter
     private String beanName;
@@ -35,7 +31,7 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
      * 使用的 handlers
      */
     @Setter
-    private List<SpringGearEngineInterface<?, ?>> handlers;
+    private List<SpringGearHandlerInterface<?, ?>> handlers;
 
     @Override
     public RESP execute(SpringGearEngineParts parts) throws SpringGearError {
@@ -52,12 +48,13 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
         long timestamp = parts.getTimestamp();
         String source = parts.getSource();
 
-        if (false == ObjectUtils.isEmpty(args)) {
+        if (!ObjectUtils.isEmpty(args)) {
             request = args[0];
         }
 
         SpringGearContextValue cv = parts.getContextValue();
 
+        // TODO use new Context Builder
         SpringGearContext context = new SpringGearContext<>(request, args, source, timestamp, cv);
 
         if (log.isDebugEnabled()) { // 入参记录，方便问题跟踪，只记录一次就好。
@@ -66,10 +63,10 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
 
         // 核心 handlers 循环处理
         for (int i = 0; i < handlers.size(); i++) {
-            SpringGearEngineInterface handler = handlers.get(i);
+            SpringGearHandlerInterface<?, ?> handler = handlers.get(i);
             String classSimpleName = handler.getClass().getSimpleName();
             // 如果不支持，则 continue。
-            if (false == handler.supports(context)) {
+            if (!handler.supports(context)) {
                 if (log.isDebugEnabled()) {
                     log.debug("TS[{}-{}] Handler '{}#{}' don't support.", source, timestamp, classSimpleName, i);
                 }
@@ -96,24 +93,5 @@ public abstract class AbstractSpringGearEngineExecutor<RESP> implements SpringGe
         final RESP response = (RESP) context.getResponse();
         return response;
     }
-
-
-    /**
-     * 异常处理
-     *
-     * @param context
-     * @param e
-     * @throws SpringGearException
-     */
-    protected void onThrowable(SpringGearContext<?, RESP> context, Throwable e) throws SpringGearException {
-        // 捕获到 continue 异常，返回继续向下执行代码。
-        if (e instanceof SpringGearContinueException) {
-        } else if (e instanceof SpringGearInterruptException) {
-            throw (SpringGearInterruptException) e;
-        } else {
-            throw new SpringGearException(e.getLocalizedMessage());
-        }
-    }
-
 
 }

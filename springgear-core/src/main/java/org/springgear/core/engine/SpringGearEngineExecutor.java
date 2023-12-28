@@ -1,6 +1,7 @@
-package org.springgear.engine.execute;
+package org.springgear.core.engine;
 
-import org.springgear.engine.context.SpringGearContext;
+import org.springgear.core.context.SpringGearContext;
+import org.springgear.core.engine.request.SpringGearEngineParts;
 import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearError;
 import org.springgear.exception.SpringGearException;

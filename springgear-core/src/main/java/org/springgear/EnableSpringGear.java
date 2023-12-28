@@ -2,9 +2,7 @@ package org.springgear;
 
 import org.springframework.context.annotation.Import;
 import org.springframework.core.annotation.AliasFor;
-import org.springgear.core.context.registrar.SpringGearBeanAnnotationRegistrar;
-import org.springgear.engine.execute.executors.AbstractSpringGearEngineExecutor;
-import org.springgear.impl.engine.execute.DefaultSpringGearEngineExecutor;
+import org.springgear.context.SpringGearBeanAnnotationRegistrar;
 
 import java.lang.annotation.*;
 

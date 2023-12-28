@@ -1,8 +1,8 @@
 package org.springgear.core.annotation;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springgear.engine.context.SpringGearContextValue;
-import org.springgear.engine.execute.SpringGearResultWrapper;
+import org.springgear.core.context.SpringGearContextValue;
+import org.springgear.core.engine.wrapper.SpringGearResultWrapper;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
