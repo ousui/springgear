@@ -12,7 +12,7 @@
     </bean>
 
     <bean class="org.springgear.core.engine.SpringGearEngineBeanProcessor" >
-        <constructor-arg index="0" value="org.springgear.impl.engine.execute.DefaultSpringGearEngineExecutor" />
+        <constructor-arg index="0" value="org.springgear.core.engine.executor.DefaultSpringGearEngineExecutor" />
     </bean>
 
 </beans>

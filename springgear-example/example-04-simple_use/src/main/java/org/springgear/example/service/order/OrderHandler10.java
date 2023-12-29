@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springgear.core.context.SpringGearContext;
-import org.springgear.impl.engine.handler.AbstractSpringGearHandler;
+import org.springgear.core.engine.executor.handler.AbstractSpringGearHandler;
 
 @Qualifier("order")
 @Component

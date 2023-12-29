@@ -1,6 +1,7 @@
 package org.springgear.core.engine;
 
 import org.springframework.util.StringUtils;
+import org.springgear.core.engine.executor.SpringGearEngineExecutor;
 import org.springgear.core.engine.request.SpringGearEngineParts;
 import org.springgear.core.engine.wrapper.SpringGearResultWrapper;
 import org.springgear.core.engine.wrapper.SpringGearOriginalResultWrapper;

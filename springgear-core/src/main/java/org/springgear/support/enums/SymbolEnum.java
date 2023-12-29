@@ -1,12 +1,10 @@
 package org.springgear.support.enums;
 
-import lombok.NonNull;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 
 /**
  * @author SHUAI.W
- * @date 2020/01/10
+ * @since  2020/01/10
  **/
 public enum SymbolEnum {
 

@@ -1,4 +1,4 @@
-package org.springgear.core.engine.executors;
+package org.springgear.core.engine.executor;
 
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -8,8 +8,7 @@ import org.springframework.util.ObjectUtils;
 import org.springgear.core.context.SpringGearContextValue;
 import org.springgear.core.engine.request.SpringGearEngineParts;
 import org.springgear.core.context.SpringGearContext;
-import org.springgear.core.engine.SpringGearEngineExecutor;
-import org.springgear.core.handler.SpringGearHandlerInterface;
+import org.springgear.core.engine.executor.handler.SpringGearHandlerInterface;
 import org.springgear.exception.SpringGearError;
 
 import java.util.List;
