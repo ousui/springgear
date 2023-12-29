@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springgear.core.context.SpringGearContext;
 import org.springgear.core.context.SpringGearContextValue;
-import org.springgear.impl.engine.handler.AbstractSpringGearEndingHandler;
+import org.springgear.core.engine.executor.handler.AbstractSpringGearEndingHandler;
 
 import java.util.List;
 

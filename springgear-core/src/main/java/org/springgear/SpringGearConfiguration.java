@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportAware;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springgear.core.engine.SpringGearEngineBeanProcessor;
-import org.springgear.impl.engine.execute.DefaultSpringGearEngineExecutor;
+import org.springgear.core.engine.executor.DefaultSpringGearEngineExecutor;
 
 @Configuration
 class SpringGearConfiguration implements ImportAware {

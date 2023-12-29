@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import org.springframework.util.Assert;
 import org.springgear.core.context.SpringGearContext;
-import org.springgear.impl.engine.handler.AbstractSpringGearRequestValidHandler;
+import org.springgear.core.engine.executor.handler.AbstractSpringGearRequestValidHandler;
 
 @Qualifier("multi")
 @Component

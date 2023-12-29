@@ -1,8 +1,7 @@
-package org.springgear.impl.engine.execute;
+package org.springgear.core.engine.executor;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springgear.core.context.SpringGearContext;
-import org.springgear.core.engine.executors.AbstractSpringGearEngineExecutor;
 import org.springgear.exception.SpringGearContinueException;
 import org.springgear.exception.SpringGearException;
 import org.springgear.exception.SpringGearInterruptException;

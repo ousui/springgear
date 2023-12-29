@@ -2,8 +2,8 @@ package org.springgear.core.engine;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springgear.core.engine.executors.AbstractSpringGearEngineExecutor;
-import org.springgear.core.handler.SpringGearHandlerInterface;
+import org.springgear.core.engine.executor.handler.SpringGearHandlerInterface;
+import org.springgear.core.engine.executor.AbstractSpringGearEngineExecutor;
 import org.springgear.support.utils.SpringGearUtils;
 import org.springgear.core.annotation.SpringGearEngine;
 import lombok.Setter;
